@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,9 @@ import {
 import BottomSheet from "../common/BottomSheet";
 import HabitColors from "../habitColors";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { LinearGradient } from "expo-linear-gradient";
+import Entypo from "@expo/vector-icons/Entypo";
+import Animated from "react-native-reanimated";
+import { FadeIn, FadeOut, Easing } from "react-native-reanimated";
 
 interface CreateBottomSheetProps {
   isVisible: boolean;
@@ -20,6 +22,13 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   isVisible,
   onClose,
 }) => {
+  const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
+    useState<boolean>(false);
+
+  const toogleAdvancesOptions = () => {
+    setIsAdvancedOptionsOpen(!isAdvancedOptionsOpen);
+  };
+
   return (
     <BottomSheet
       borderRadius={20}
@@ -28,15 +37,15 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
       isVisible={isVisible}
       backgroundColor="#212529"
     >
-      <View className="flex flex-1 relative">
+      <View className="flex p-4 flex-1 gap-4 relative">
+        <View className="flex flex-row items-center gap-8">
+          <TouchableOpacity onPress={onClose} className="">
+            <Ionicons name="close" size={24} color="white" />
+          </TouchableOpacity>
+          <Text className="font-medium text-xl text-white">New Habit</Text>
+        </View>
         <ScrollView>
-          <View className="flex p-4 flex-row items-center gap-8">
-            <TouchableOpacity className="">
-              <Ionicons name="close" size={24} color="white" />
-            </TouchableOpacity>
-            <Text className="font-medium text-xl text-white">New Habit</Text>
-          </View>
-          <View className="flex gap-3 p-4">
+          <View className="flex gap-3">
             <View className="flex gap-2">
               <Text className="text-white font-medium">Nom</Text>
               <TextInput className="bg-black p-2 rounded" />
@@ -46,18 +55,9 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
               <TextInput className="bg-black p-2 rounded" />
             </View>
             <HabitColors />
-          </View>
-          <View className="flex gap-2 relative items-center flex-row mx-auto max-w-[80%]">
-            <LinearGradient
-              // gradient direction: left → right
-              colors={["#8B5CF6", "#EC4899", "#EF4444"]} // purple → pink → red
-              style={{ height: 2, width: "100%" }}
-            />
-            <Text className="text-white">Advanced setting</Text>
-            <LinearGradient
-              // gradient direction: left → right
-              colors={["#8B5CF6", "#EC4899", "#EF4444"]} // purple → pink → red
-              style={{ height: 2, width: "100%" }}
+            <AdvancedOptions
+              toogleAdvancedOptions={toogleAdvancesOptions}
+              isOpen={isAdvancedOptionsOpen}
             />
           </View>
         </ScrollView>
@@ -68,6 +68,47 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
         </TouchableOpacity>
       </View>
     </BottomSheet>
+  );
+};
+
+interface AdvancedOptionsProps {
+  isOpen: boolean;
+  toogleAdvancedOptions: () => void;
+}
+
+const AdvancedOptions: FC<AdvancedOptionsProps> = ({
+  isOpen,
+  toogleAdvancedOptions,
+}) => {
+  return (
+    <View className="flex gap-2">
+      <View className="flex gap-2 mx-9 relative items-center flex-row">
+        <View className="h-px w-full bg-gray-600 bg-gradient-to-r flex-1" />
+        <TouchableOpacity
+          onPress={toogleAdvancedOptions}
+          className="flex gap-1 items-center flex-row"
+        >
+          <Text className="text-gray-300">Advanced Options</Text>
+          {isOpen ? (
+            <Entypo name="chevron-small-down" size={24} color="#adb5bd" />
+          ) : (
+            <Entypo name="chevron-small-up" size={24} color="#adb5bd" />
+          )}
+        </TouchableOpacity>
+        <View className="h-px w-full bg-gray-600 bg-gradient-to-r flex-1" />
+      </View>
+      {isOpen && (
+        <Animated.View
+          entering={FadeIn.duration(300).easing(Easing.inOut(Easing.quad))}
+          exiting={FadeOut}
+          className="flex gap-2"
+        >
+          <View className="flex gap-2">
+            <Text className="text-white">hello from animmated view</Text>
+          </View>
+        </Animated.View>
+      )}
+    </View>
   );
 };
 

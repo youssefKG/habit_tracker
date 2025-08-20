@@ -6,8 +6,31 @@ import HabitDetailBottomSheet from "@/components/HabitDetailBottomSheet";
 import HabitHeader from "@/components/HabitHeader";
 import CreateHabitBottomSheet from "@/components/createHabitBottomSheet";
 
+type CreateNewHabit = {
+  name: string;
+  description: string;
+  color: string;
+  reminder_time: string;
+  icon: string;
+  priority: boolean;
+  catgory: string;
+  frequency: "daily" | "weekly" | "monthly";
+  goal: number;
+};
+
 export default function TabOneScreen() {
   const [isHabitDetailOpen, setIsHabitDetailOpen] = useState<boolean>(false);
+  const [newHabit, setNewHabit] = useState<CreateNewHabit>({
+    name: "",
+    description: "",
+    color: "",
+    reminder_time: "",
+    icon: "",
+    priority: true,
+    catgory: "",
+    frequency: "daily",
+    goal: 12,
+  });
   const [isCreateHabitBottomSheetOpen, setIsCreateHabitBottomSheetOpen] =
     useState<boolean>(true);
 
@@ -25,6 +48,8 @@ export default function TabOneScreen() {
   const closeCreateHabitBottomSheet = () => {
     setIsCreateHabitBottomSheetOpen(false);
   };
+
+  const handleSaveNewHabit = () => {};
 
   return (
     <SafeAreaView>
