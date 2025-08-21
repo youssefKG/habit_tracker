@@ -1,10 +1,8 @@
-import React from "react";
+import { FC, useEffect, useState } from "react";
+import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs } from "expo-router";
-import { Pressable } from "react-native";
-import Colors from "@/constants/Colors";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { useColorScheme } from "@/components/useColorScheme";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { RelativePathString, usePathname } from "expo-router";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
@@ -13,56 +11,38 @@ function TabBarIcon(props: {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+const Layout = () => {
+  const pathName = usePathname();
+  const [path, setPath] = useState<string>(pathName);
+
+  useEffect(() => {
+    setPath(pathName);
+    console.log("path name", pathName);
+  }, [pathName]);
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        tabBarStyle: {
-          marginHorizontal: "auto",
-          padding: 2,
-          borderRadius: 20,
-          height: 50,
-          display: "flex",
-          justifyContent: "center",
-          backgroundColor: "#403d39",
-          width: "60%",
-          marginVertical: 10,
-        },
-        tabBarShowLabel: false,
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: "Tab One",
-          headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <Ionicons
-                    name="add-circle-outline"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
+    <Tabs className="">
+      <TabSlot />
+      <TabList className="absolute bg-[#343a40] border border-gray-300 rounded-full p-2 px-12  bottom-6 self-center">
+        <TabTrigger name="index" href="./index">
+          <CustomTab pathName={path} name="/" />
+        </TabTrigger>
+      </TabList>
     </Tabs>
   );
+};
+
+export default Layout;
+
+interface CustomTabProps {
+  pathName: string;
+  name: string;
 }
+const CustomTab: FC<CustomTabProps> = ({ pathName, name }) => {
+  return (
+    <MaterialIcons
+      name="checklist"
+      size={28}
+      color={pathName === name ? "#00b4d8" : "white"}
+    />
+  );
+};

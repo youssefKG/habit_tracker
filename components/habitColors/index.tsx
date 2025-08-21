@@ -31,8 +31,9 @@ const HabitColors: FC<HabitColorsProps> = ({}) => {
     <View className="flex gap-2">
       <Text className="text-white font-medium">Colors</Text>
       <View className="flex flex-row gap-4 flex-wrap">
-        {habitColors.map((color: string) => (
+        {habitColors.map((color: string, index: number) => (
           <View
+            key={index}
             style={{ backgroundColor: color }}
             className="w-9 h-9 rounded"
           />

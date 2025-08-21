@@ -23,7 +23,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   onClose,
 }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
-    useState<boolean>(false);
+    useState<boolean>(true);
 
   const toogleAdvancesOptions = () => {
     setIsAdvancedOptionsOpen(!isAdvancedOptionsOpen);
@@ -32,7 +32,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   return (
     <BottomSheet
       borderRadius={20}
-      height={0.9}
+      height={0.96}
       onClose={onClose}
       isVisible={isVisible}
       backgroundColor="#212529"
@@ -47,12 +47,12 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
         <ScrollView>
           <View className="flex gap-3">
             <View className="flex gap-2">
-              <Text className="text-white font-medium">Nom</Text>
-              <TextInput className="bg-black p-2 rounded" />
+              <Text className="text-gray-300">Nom</Text>
+              <TextInput className="bg-black p-2 rounded-xl border border-gray-600" />
             </View>
             <View className="flex gap-1">
-              <Text className="text-white">Descriptin</Text>
-              <TextInput className="bg-black p-2 rounded" />
+              <Text className="text-gray-300">Descriptin</Text>
+              <TextInput className="bg-black p-2 rounded-xl border border-gray-600" />
             </View>
             <HabitColors />
             <AdvancedOptions
@@ -61,7 +61,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
             />
           </View>
         </ScrollView>
-        <TouchableOpacity className="bg-blue-500 shadow-cyan-600 p-2 absolute bottom-6 w-[60%] self-center rounded">
+        <TouchableOpacity className="bg-blue-500 shadow-cyan-600 border border-gray-400 p-2 absolute bottom-6 w-[60%] self-center rounded">
           <Text className="text-white text-xl text-center font-medium">
             Save
           </Text>
@@ -81,7 +81,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
   toogleAdvancedOptions,
 }) => {
   return (
-    <View className="flex gap-2">
+    <View className="flex gap-2 mt-6">
       <View className="flex gap-2 mx-9 relative items-center flex-row">
         <View className="h-px w-full bg-gray-600 bg-gradient-to-r flex-1" />
         <TouchableOpacity
@@ -103,8 +103,28 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
           exiting={FadeOut}
           className="flex gap-2"
         >
-          <View className="flex gap-2">
-            <Text className="text-white">hello from animmated view</Text>
+          <View className="flex flex-row gap-2">
+            <View className="flex flex-1 gap-2">
+              <Text className="text-gray-300">Frequency</Text>
+              <TouchableOpacity className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600">
+                <Text className="text-gray-300">None</Text>
+                <Entypo name="chevron-small-right" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+            <View className="flex flex-1 gap-2">
+              <Text className="text-gray-300 ">Reminder</Text>
+              <TouchableOpacity className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600">
+                <Text className="text-gray-300">None</Text>
+                <Entypo name="chevron-small-right" size={24} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View className="flex flex-1 gap-2">
+            <Text className="text-gray-300">Category</Text>
+            <TouchableOpacity className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600">
+              <Text className="text-gray-300">None</Text>
+              <Entypo name="chevron-small-right" size={24} color="white" />
+            </TouchableOpacity>
           </View>
         </Animated.View>
       )}
