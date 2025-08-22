@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Habit from "@/components/Habit";
-import HabitDetailBottomSheet from "@/components/HabitDetailBottomSheet";
 import HabitHeader from "@/components/HabitHeader";
 import CreateHabitBottomSheet from "@/components/createHabitBottomSheet";
+import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
+import useBottomSheetModal from "@/hooks/useBottomSheet";
+import FrequencyBottomSheet from "@/components/frequencyBottomSheet";
+import AddNewCategoryBottomSheet from "@/components/addCategoryBottomSheet";
 
 type CreateNewHabit = {
   name: string;
@@ -20,40 +23,40 @@ type CreateNewHabit = {
 
 export default function TabOneScreen() {
   const [isHabitDetailOpen, setIsHabitDetailOpen] = useState<boolean>(false);
-  const [newHabit, setNewHabit] = useState<CreateNewHabit>({
-    name: "",
-    description: "",
-    color: "",
-    reminder_time: "",
-    icon: "",
-    priority: true,
-    catgory: "",
-    frequency: "daily",
-    goal: 12,
-  });
-  const [isCreateHabitBottomSheetOpen, setIsCreateHabitBottomSheetOpen] =
-    useState<boolean>(true);
+  const [
+    categoriesBottomSheetRef,
+    openCategoriesBottomSheet,
+    closeCategoriesBottomSheet,
+  ] = useBottomSheetModal();
+  const [
+    createHabitBottomSheetRef,
+    openCreateHabitBottomSheet,
+    closeCreateHabitBottomSheet,
+  ] = useBottomSheetModal();
+  const [
+    reminderBottomSheet,
+    openReminderBottomSheet,
+    closeReminderBottomSheet,
+  ] = useBottomSheetModal();
+  const [
+    frequencyBottomSheetRef,
+    openFrequencyBottomSheet,
+    closeFrequencyBottomSheet,
+  ] = useBottomSheetModal();
 
-  const handleOpenHabitDetailBottomSheet = () => {
-    setIsHabitDetailOpen(false);
-  };
+  const [
+    addNewCategoryBottomSheetRef,
+    openAddNewCategoryBottomSheet,
+    closeAddNewCategoryBottomSheet,
+  ] = useBottomSheetModal();
 
   const openHabitDetailBottomSheet = () => {
     setIsHabitDetailOpen(true);
   };
 
-  const openCreateHabitBottomSheet = (): void => {
-    setIsCreateHabitBottomSheetOpen(true);
-  };
-  const closeCreateHabitBottomSheet = () => {
-    setIsCreateHabitBottomSheetOpen(false);
-  };
-
-  const handleSaveNewHabit = () => {};
-
   return (
-    <SafeAreaView>
-      <View className="bg-[#161617] flex gap-2 h-screen">
+    <SafeAreaView className="flex-1">
+      <View className="bg-[#161617] flex gap-2 flex-1">
         <HabitHeader openCreateHabitBottomSheet={openCreateHabitBottomSheet} />
         <View className="flex flex-col gap-2 p-4">
           <Habit
@@ -71,15 +74,25 @@ export default function TabOneScreen() {
             name="Running"
           />
         </View>
-        <HabitDetailBottomSheet
-          isVisible={isHabitDetailOpen}
-          onClose={handleOpenHabitDetailBottomSheet}
-        />
-        <CreateHabitBottomSheet
-          isVisible={isCreateHabitBottomSheetOpen}
-          onClose={closeCreateHabitBottomSheet}
-        />
+        <Text className="text-white">hello world</Text>
       </View>
+
+      <CreateHabitBottomSheet
+        onClose={closeCreateHabitBottomSheet}
+        createHabitBottomSheetRef={createHabitBottomSheetRef}
+        openCategoriesBottomSheet={openCategoriesBottomSheet}
+        closeCategoriesBottomSheet={closeCategoriesBottomSheet}
+        openFrequencyBottomSheet={openFrequencyBottomSheet}
+      />
+      <CategoriesBottomSheet
+        openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
+        ref={categoriesBottomSheetRef}
+      />
+      <FrequencyBottomSheet
+        close={closeFrequencyBottomSheet}
+        ref={frequencyBottomSheetRef}
+      />
+      <AddNewCategoryBottomSheet ref={addNewCategoryBottomSheetRef} />
     </SafeAreaView>
   );
 }

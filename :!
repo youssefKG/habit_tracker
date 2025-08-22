@@ -1,0 +1,64 @@
+import { Ref, FC } from "react";
+import {
+  BottomSheetBackdrop,
+  BottomSheetModal,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
+import { TouchableOpacity, View, Text } from "react-native";
+import Icon from "../icon";
+import { TextInput } from "react-native-gesture-handler";
+
+interface AddNewCategoryBottomSheetProps {
+  ref: Ref<BottomSheetModal>;
+}
+
+const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
+  ref,
+}) => {
+  return (
+    <BottomSheetModal
+      stackBehavior="push"
+      ref={ref}
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop
+          appearsOnIndex={1}
+          disappearsOnIndex={-1}
+          pressBehavior="close"
+          {...props}
+        />
+      )}
+      snapPoints={["40%"]}
+    >
+      <BottomSheetView className="bg-black p-3 h-full">
+        <View className="flex gap-4">
+          <View className="flex gap-1">
+            <Text className="text-white font-bold text-xl">
+              Create a New Category
+            </Text>
+            <Text className="text-gray-400">
+              Organize your habits better by creating a custom category. Choose
+              a name and an icon that best represents your new category.
+            </Text>
+          </View>
+          <View className="flex flex-row gap-2">
+            <TouchableOpacity
+              className="p-1 flex items-center w-8 h-8 justify-center
+        rounded-xl border border-gray-600"
+            >
+              <Icon name="work" color="white" size={17} />
+            </TouchableOpacity>
+            <TextInput
+              placeholderTextColor="white"
+              placeholder="Fitness, Sport, ..."
+              placeholderClassName="text-gray-200"
+              className="bg-[#343a40] flex-1 placeholder:text-gray-300 rounded-xl border border-gray-600"
+            />
+          </View>
+          <
+        </View>
+      </BottomSheetView>
+    </BottomSheetModal>
+  );
+};
+
+export default AddNewCategoryBottomSheet;
