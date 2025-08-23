@@ -1,11 +1,8 @@
 import { FC, useEffect, useState } from "react";
-import { View } from "react-native";
 import { Tabs, TabList, TabTrigger, TabSlot } from "expo-router/ui";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { usePathname } from "expo-router";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];

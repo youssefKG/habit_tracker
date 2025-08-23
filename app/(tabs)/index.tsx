@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Habit from "@/components/Habit";
@@ -8,6 +8,7 @@ import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
 import FrequencyBottomSheet from "@/components/frequencyBottomSheet";
 import AddNewCategoryBottomSheet from "@/components/addCategoryBottomSheet";
+import IconsBottomSheet from "@/components/IconsBottomSheet";
 
 type CreateNewHabit = {
   name: string;
@@ -23,6 +24,7 @@ type CreateNewHabit = {
 
 export default function TabOneScreen() {
   const [isHabitDetailOpen, setIsHabitDetailOpen] = useState<boolean>(false);
+
   const [
     categoriesBottomSheetRef,
     openCategoriesBottomSheet,
@@ -49,6 +51,8 @@ export default function TabOneScreen() {
     openAddNewCategoryBottomSheet,
     closeAddNewCategoryBottomSheet,
   ] = useBottomSheetModal();
+  const [iconsBottomSheetRef, openIconsBottomSheet, closeIconsBottomSheetR] =
+    useBottomSheetModal();
 
   const openHabitDetailBottomSheet = () => {
     setIsHabitDetailOpen(true);
@@ -92,6 +96,7 @@ export default function TabOneScreen() {
         close={closeFrequencyBottomSheet}
         ref={frequencyBottomSheetRef}
       />
+      <IconsBottomSheet ref={iconsBottomSheetRef} />
       <AddNewCategoryBottomSheet ref={addNewCategoryBottomSheetRef} />
     </SafeAreaView>
   );
