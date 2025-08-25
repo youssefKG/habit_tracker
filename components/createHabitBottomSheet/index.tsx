@@ -52,7 +52,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
         />
       )}
     >
-      <BottomSheetView className="flex-1 h-full z-40 p-4 bg-black relative">
+      <BottomSheetView className="flex-1 h-full z-40 p-4 bg-[#161617] relative">
         <View className="relative flex-1 z-30">
           <View className="flex flex-row items-center gap-8">
             <TouchableOpacity onPress={() => onClose(-1)} className="">
@@ -60,7 +60,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
             </TouchableOpacity>
             <Text className="font-medium text-xl text-white">New Habit</Text>
           </View>
-          <ScrollView>
+          <ScrollView className="mt-4">
             <View className="flex gap-3">
               <View className="flex gap-2">
                 <Text className="text-gray-300">Nom</Text>

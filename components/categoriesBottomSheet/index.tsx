@@ -17,6 +17,7 @@ interface CategoriesBottomSheetProps {
 const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
   ref,
   openAddNewCategoryBottomSheet,
+  openIconsBottomSheet,
 }) => {
   return (
     <BottomSheetModal
@@ -34,8 +35,11 @@ const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
         />
       )}
     >
-      <BottomSheetScrollView className="h-full bg-black" style={{ flex: 1 }}>
-        <View className="bg-black flex gap-4 flex-1 h-full p-4">
+      <BottomSheetScrollView
+        className="h-full bg-[#161617]"
+        style={{ flex: 1 }}
+      >
+        <View className="flex gap-4 flex-1 h-full p-4">
           <View className="flex gap-2">
             <Text className="text-white font-bold">Categories</Text>
             <Text className="text-gray-400">

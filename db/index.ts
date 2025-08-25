@@ -16,7 +16,7 @@ INSERT INTO test (value, intValue) VALUES ('test3', 789);
 const result = await db.runAsync(
   "INSERT INTO test (value, intValue) VALUES (?, ?)",
   "aaa",
-  100
+  100,
 );
 console.log(result.lastInsertRowId, result.changes);
 await db.runAsync("UPDATE test SET intValue = ? WHERE value = ?", 999, "aaa"); // Binding unnamed parameters from variadic arguments

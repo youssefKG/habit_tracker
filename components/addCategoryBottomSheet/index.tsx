@@ -12,14 +12,16 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import Icon from "../icon";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
+import { TextInput } from "react-native-gesture-handler";
 
 interface AddNewCategoryBottomSheetProps {
   ref: Ref<BottomSheetModal>;
+  openIconsBottomSheet: () => void;
 }
 
 const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
   ref,
+  openIconsBottomSheet,
 }) => {
   return (
     <BottomSheetModal
@@ -35,7 +37,7 @@ const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
       )}
       snapPoints={["70%"]}
     >
-      <BottomSheetView className="bg-black p-3 h-full">
+      <BottomSheetView className="bg-[#161617] p-3 h-full">
         <View className="flex gap-4 relative h-full">
           <View className="flex gap-1">
             <Text className="text-white font-bold text-xl">
@@ -48,6 +50,7 @@ const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
           </View>
           <View className="flex flex-row items-center gap-2">
             <TouchableOpacity
+              onPress={openIconsBottomSheet}
               className="p-1 flex items-center w-12 h-12 justify-center
         rounded-xl border border-gray-600"
             >
