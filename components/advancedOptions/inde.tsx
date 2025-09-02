@@ -8,6 +8,7 @@ interface AdvancedOptionsProps {
   toogleAdvancedOptions: () => void;
   openCategoriesBottomSheet: () => void;
   openFrequencyBottomSheet: () => void;
+  openReminderBottomSheet: () => void;
 }
 
 const AdvancedOptions: FC<AdvancedOptionsProps> = ({
@@ -15,6 +16,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
   toogleAdvancedOptions,
   openCategoriesBottomSheet,
   openFrequencyBottomSheet,
+  openReminderBottomSheet,
 }) => {
   return (
     <View className="flex gap-2 mt-6">
@@ -52,7 +54,11 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
             </View>
             <View className="flex flex-1 gap-2">
               <Text className="text-gray-300 ">Reminder</Text>
-              <TouchableOpacity className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600">
+              <TouchableOpacity
+                onPress={openReminderBottomSheet}
+                className="rounded-xl flex flex-row justify-between
+                items-center p-3 bg-black border border-gray-600"
+              >
                 <Text className="text-gray-300">None</Text>
                 <Entypo name="chevron-small-right" size={24} color="white" />
               </TouchableOpacity>
@@ -62,7 +68,8 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
             <Text className="text-gray-300">Category</Text>
             <TouchableOpacity
               onPress={openCategoriesBottomSheet}
-              className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600"
+              className="rounded-xl flex flex-row justify-between items-center
+              p-3 bg-black border border-gray-600"
             >
               <Text className="text-gray-300">None</Text>
               <Entypo name="chevron-small-right" size={24} color="white" />

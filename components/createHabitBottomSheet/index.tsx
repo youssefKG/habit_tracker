@@ -14,20 +14,27 @@ import {
 import HabitColors from "../habitColors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AdvancedOptions from "../advancedOptions/inde";
+import { NewHabit } from "@/types/habit.type";
 
 interface CreateBottomSheetProps {
-  onClose: (_: number) => void;
+  newHabit: NewHabit;
   createHabitBottomSheetRef: Ref<BottomSheetModal>;
+  handleChange: (name: string, value: string) => void;
+  onClose: (_: number) => void;
   openCategoriesBottomSheet: () => void;
   closeCategoriesBottomSheet: () => void;
   openFrequencyBottomSheet: () => void;
+  openReminderBottomSheet: () => void;
 }
 
 const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
+  newHabit,
+  handleChange,
   onClose,
   openCategoriesBottomSheet,
   openFrequencyBottomSheet,
   createHabitBottomSheetRef,
+  openReminderBottomSheet,
 }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
     useState<boolean>(true);
@@ -64,25 +71,40 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
             <View className="flex gap-3">
               <View className="flex gap-2">
                 <Text className="text-gray-300">Nom</Text>
-                <TextInput className="bg-black p-2 rounded-xl border border-gray-600" />
+                <TextInput
+                  value={newHabit.name}
+                  onChangeText={(value: string) => handleChange("name", value)}
+                  className="bg-black p-2 rounded-xl border border-gray-600"
+                />
               </View>
               <View className="flex gap-1">
                 <Text className="text-gray-300">Descriptin</Text>
-                <TextInput className="bg-black p-2 rounded-xl border border-gray-600" />
+                <TextInput
+                  value={newHabit.description}
+                  onChangeText={(value: string) =>
+                    handleChange("description", value)
+                  }
+                  className="bg-black p-2 rounded-xl border border-gray-600"
+                />
               </View>
-              <HabitColors />
+              <HabitColors
+                handleColorChange={(color) => handleChange("color", color)}
+                pickedColor={newHabit.color}
+              />
               <AdvancedOptions
                 toogleAdvancedOptions={toogleAdvancesOptions}
                 isOpen={isAdvancedOptionsOpen}
                 openCategoriesBottomSheet={openCategoriesBottomSheet}
                 openFrequencyBottomSheet={openFrequencyBottomSheet}
+                openReminderBottomSheet={openReminderBottomSheet}
               />
             </View>
           </ScrollView>
-          <TouchableOpacity className="bg-blue-500 shadow-cyan-600 border border-gray-400 p-2 absolute bottom-6 w-[60%] self-center rounded">
-            <Text className="text-white text-xl text-center font-medium">
-              Save
-            </Text>
+          <TouchableOpacity
+            className="bg-black/40 shadow-cyan-600 border
+          border-gray-700 p-2 tracking-[1px] absolute bottom-6 w-[60%] self-center rounded-xl"
+          >
+            <Text className="text-gray-200 text-xl text-center">Save</Text>
           </TouchableOpacity>
         </View>
       </BottomSheetView>

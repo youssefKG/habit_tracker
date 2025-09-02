@@ -5,6 +5,7 @@ import Feather from "@expo/vector-icons/Feather";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { IconPack } from "@/types/icon";
 
 interface RenderIconsProps {
@@ -26,7 +27,7 @@ const RenderIcon: FC<RenderIconsProps> = ({
     case "Ionicons":
       return <Ionicons name={name as any} size={size} color={color} />;
     case "AntDesign":
-      return <Ionicons name={name as any} size={size} color={color} />;
+      return <AntDesign name={name as any} size={size} color={color} />;
     case "FontAwsome":
       return <FontAwesome name={name as any} size={size} color={color} />;
     case "MaterialCommunityIcons":

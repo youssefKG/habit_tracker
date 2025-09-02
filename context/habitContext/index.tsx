@@ -1,5 +1,4 @@
-import { createContext, FC, PropsWithChildren } from "react";
-import { View, Text } from "react-native";
+import { createContext, FC, PropsWithChildren, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HabitHeader from "@/components/HabitHeader";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
@@ -8,12 +7,28 @@ import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
 import FrequencyBottomSheet from "@/components/frequencyBottomSheet";
 import IconsBottomSheet from "@/components/IconsBottomSheet";
 import AddNewCategoryBottomSheet from "@/components/addCategoryBottomSheet";
+import { FrequencyType, NewHabit } from "@/types/habit.type";
+import ReminderBottomSheet from "@/components/remiderBottomSheet";
 
 interface HabitContextI {}
 
 const HabitContext = createContext<HabitContextI>({} as HabitContextI);
 
 const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
+  const [newHabit, setNewHabit] = useState<NewHabit>({
+    name: "",
+    description: "",
+    color: "#FF6B6B",
+    frequency: "none",
+    reminder: "none",
+    category: "none",
+  });
+
+  const handleChange = (name: string, value: string) => {
+    setNewHabit({ ...newHabit, [name]: value });
+    console.log(newHabit);
+  };
+
   const [
     createHabitBottomSheetRef,
     openCreateHabitBottomSheet,
@@ -24,9 +39,8 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     openCategoriesBottomSheet,
     closeCategoriesBottomSheet,
   ] = useBottomSheetModal();
-
   const [
-    reminderBottomSheet,
+    reminderBottomSheetRef,
     openReminderBottomSheet,
     closeReminderBottomSheet,
   ] = useBottomSheetModal();
@@ -52,17 +66,24 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
         <HabitHeader openCreateHabitBottomSheet={openCreateHabitBottomSheet} />
         {children}
         <CreateHabitBottomSheet
+          newHabit={newHabit}
+          handleChange={handleChange}
           onClose={closeCreateHabitBottomSheet}
           createHabitBottomSheetRef={createHabitBottomSheetRef}
           openCategoriesBottomSheet={openCategoriesBottomSheet}
           closeCategoriesBottomSheet={closeCategoriesBottomSheet}
           openFrequencyBottomSheet={openFrequencyBottomSheet}
+          openReminderBottomSheet={openReminderBottomSheet}
         />
         <CategoriesBottomSheet
           openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
           ref={categoriesBottomSheetRef}
         />
         <FrequencyBottomSheet
+          handleChangeFrenquency={(value: FrequencyType) =>
+            handleChange("frequency", value)
+          }
+          frequency={newHabit.frequency}
           close={closeFrequencyBottomSheet}
           ref={frequencyBottomSheetRef}
         />
@@ -74,6 +95,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
           closeIconsBottomSheet={closeIconsBottomSheet}
           ref={iconsBottomSheetRef}
         />
+        <ReminderBottomSheet ref={reminderBottomSheetRef} />
       </SafeAreaView>
     </HabitContext.Provider>
   );

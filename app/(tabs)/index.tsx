@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 
 export default function TabOneScreen() {
   return (

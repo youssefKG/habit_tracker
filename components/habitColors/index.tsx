@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import Animated, { FadeIn, FadeOut, Easing } from "react-native-reanimated";
 
 const habitColors: string[] = [
   "#FF6B6B", // Bright Red
@@ -24,19 +25,36 @@ const habitColors: string[] = [
   "#A9A9A9", // Light Gray
 ];
 
-interface HabitColorsProps {}
+interface HabitColorsProps {
+  handleColorChange: (color: string) => void;
+  pickedColor: string;
+}
 
-const HabitColors: FC<HabitColorsProps> = ({}) => {
+const HabitColors: FC<HabitColorsProps> = ({
+  pickedColor,
+  handleColorChange,
+}) => {
   return (
     <View className="flex gap-2">
       <Text className="text-white font-medium">Colors</Text>
       <View className="flex flex-row gap-4 flex-wrap">
         {habitColors.map((color: string, index: number) => (
-          <View
+          <TouchableOpacity
             key={index}
             style={{ backgroundColor: color }}
-            className="w-9 h-9 rounded"
-          />
+            className="flex items-center justify-center w-9 h-9 rounded-lg"
+            onPress={() => handleColorChange(color)}
+          >
+            {pickedColor === color && (
+              <Animated.View
+                entering={FadeIn.duration(600).easing(
+                  Easing.inOut(Easing.quad),
+                )}
+                exiting={FadeOut}
+                className="w-5 h-5 rounded-full bg-black"
+              />
+            )}
+          </TouchableOpacity>
         ))}
       </View>
     </View>
