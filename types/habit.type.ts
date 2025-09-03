@@ -1,12 +1,23 @@
 type FrequencyType = "none" | "daily" | "week" | "monthly";
 
+type ReminderDateType = {
+  days: string[];
+  time: Date;
+};
+
 type NewHabit = {
   name: string;
   description: string;
   color: string;
   frequency: FrequencyType;
-  reminder: Date | "none";
+  reminders: Reminder[];
   category: string;
 };
 
-export type { NewHabit, FrequencyType };
+interface Reminder {
+  id?: number;
+  time: Date;
+  days: string[];
+}
+
+export type { NewHabit, FrequencyType, ReminderDateType, Reminder };

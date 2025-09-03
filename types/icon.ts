@@ -9,6 +9,7 @@ type IconPack =
   | "FontAwsome"
   | "MaterialCommunityIcons"
   | "FontAwesome5"
-  | "Feather";
+  | "Feather"
+  | "EvilIcons";
 
 export type { IconName, IconPack };

@@ -14,15 +14,17 @@ interface HabitContextI {}
 
 const HabitContext = createContext<HabitContextI>({} as HabitContextI);
 
+const newHabitDefaultValues: NewHabit = {
+  name: "",
+  description: "",
+  frequency: "none",
+  reminders: [],
+  category: "",
+  color: "#FF6B6B",
+};
+
 const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [newHabit, setNewHabit] = useState<NewHabit>({
-    name: "",
-    description: "",
-    color: "#FF6B6B",
-    frequency: "none",
-    reminder: "none",
-    category: "none",
-  });
+  const [newHabit, setNewHabit] = useState<NewHabit>(newHabitDefaultValues);
 
   const handleChange = (name: string, value: string) => {
     setNewHabit({ ...newHabit, [name]: value });
@@ -95,7 +97,11 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
           closeIconsBottomSheet={closeIconsBottomSheet}
           ref={iconsBottomSheetRef}
         />
-        <ReminderBottomSheet ref={reminderBottomSheetRef} />
+        <ReminderBottomSheet
+          habitColor={newHabit.color}
+          ref={reminderBottomSheetRef}
+          reminders={newHabit.reminders}
+        />
       </SafeAreaView>
     </HabitContext.Provider>
   );

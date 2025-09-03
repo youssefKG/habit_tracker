@@ -2,6 +2,7 @@ import { FC } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import Feather from "@expo/vector-icons/Feather";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -37,7 +38,9 @@ const RenderIcon: FC<RenderIconsProps> = ({
     case "FontAwesome5":
       <FontAwesome5 name={name as any} size={size} color={color} />;
     case "Feather":
-      <Feather name={name as any} size={size} color={color} />;
+      return <Feather name={name as any} size={size} color={color} />;
+    case "EvilIcons":
+      return <EvilIcons name={name as any} size={size} color={color} />;
     default:
       return null;
   }

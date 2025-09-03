@@ -17,7 +17,6 @@ interface CategoriesBottomSheetProps {
 const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
   ref,
   openAddNewCategoryBottomSheet,
-  openIconsBottomSheet,
 }) => {
   return (
     <BottomSheetModal
