@@ -37,6 +37,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     onChangeNewReminderTime,
     timePickerDate,
     onOpenReminderBottomSheet,
+    onCloseReminderBottomSheet,
   } = useNewHabit();
 
   const [
@@ -65,13 +66,6 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
   const [iconsBottomSheetRef, openIconsBottomSheet, closeIconsBottomSheet] =
     useBottomSheetModal();
 
-  const handleSaveNewReminders = (newReminders: Reminder[]) => {
-    setNewHabit((prevNewHabit) => ({
-      ...prevNewHabit,
-      reminders: [...newReminders],
-    }));
-  };
-
   useEffect(() => {
     console.log("new habit", newHabit);
   }, []);
@@ -88,7 +82,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
           openCategoriesBottomSheet={openCategoriesBottomSheet}
           closeCategoriesBottomSheet={closeCategoriesBottomSheet}
           openFrequencyBottomSheet={openFrequencyBottomSheet}
-          openReminderBottomSheet={openReminderBottomSheet}
+          openReminderBottomSheet={onOpenReminderBottomSheet}
         />
         <CategoriesBottomSheet
           openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
@@ -111,10 +105,18 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
           ref={iconsBottomSheetRef}
         />
         <ReminderBottomSheet
-          ref={reminderBottomSheetRef}
-          handleSaveNewReminders={handleSaveNewReminders}
-          closeReminderBottomSheet={closeReminderBottomSheet}
+          openTimePicker={openTimePicker}
+          deleteNewReminder={deleteNewReminder}
           newHabit={newHabit}
+          newReminders={newReminders}
+          timePickerDate={timePickerDate}
+          toggleNewReminderDay={toggleNewReminderDay}
+          onChangeNewReminderTime={onChangeNewReminderTime}
+          addNewReminder={addNewReminder}
+          isTimePickerOpen={isTimePickerOpen}
+          ref={reminderBottomSheetRef}
+          onClose={onCloseReminderBottomSheet}
+          onSave={onSaveNewReminders}
         />
       </SafeAreaView>
     </HabitContext.Provider>

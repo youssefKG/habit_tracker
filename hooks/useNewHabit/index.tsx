@@ -33,6 +33,7 @@ const useNewHabit = () => {
   ) => {
     const currentDate: Date = selectedData ?? new Date();
     setTimePickerDate(currentDate);
+    setIsTimePickerOpen(false);
   };
 
   const addNewReminder = () => {
@@ -82,7 +83,7 @@ const useNewHabit = () => {
     setNewHabit((prevNewHabit) => ({ ...prevNewHabit, [key]: value }));
   };
 
-  const onSaveNewReminders = (newReminders: Reminder[]) => {
+  const onSaveNewReminders = () => {
     setNewHabit((prevNewHabit: NewHabit) => ({
       ...prevNewHabit,
       reminders: newReminders,
@@ -98,7 +99,6 @@ const useNewHabit = () => {
 
   const onCloseReminderBottomSheet = () => {
     setNewReminders([]);
-    setTimePickerDate(new Date());
   };
 
   return {

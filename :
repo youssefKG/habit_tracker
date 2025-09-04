@@ -1,9 +1,0 @@
-const daysOfWeek = ["Mon", "Tues", "Wed", "Thu", "Friy", "Sat", "Sun"];
-
-const useNewReminders = () => {
-  return {};
-};
-
-export default useNewReminders;
-
-export { daysOfWeek };

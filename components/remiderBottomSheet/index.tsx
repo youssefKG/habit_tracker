@@ -1,4 +1,4 @@
-import { FC, Ref, useEffect, useState } from "react";
+import { FC, Ref } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import {
   BottomSheetBackdrop,
@@ -24,7 +24,6 @@ interface ReminderBottomSheetProps {
     _: DateTimePickerEvent,
     selectedDate?: Date,
   ) => void;
-  handleSaveNewReminders: (newReminders: Reminder[]) => void;
   onSave: () => void;
   onClose: () => void;
   toggleNewReminderDay: (day: string, reminderId: number) => void;
@@ -36,7 +35,6 @@ const daysOfWeek = ["Mon", "Tues", "Wed", "Thu", "Friy", "Sat", "Sun"];
 const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
   ref,
   newReminders,
-  handleSaveNewReminders,
   timePickerDate,
   newHabit,
   isTimePickerOpen,
@@ -48,13 +46,6 @@ const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
   deleteNewReminder,
   addNewReminder,
 }) => {
-  const [isHabitTimePickerShown, setIsHabitTimePickerShown] =
-    useState<boolean>(false);
-
-  const openHabitTimePicker = () => {
-    setIsHabitTimePickerShown(true);
-  };
-
   return (
     <BottomSheetModal
       backdropComponent={(props) => (
@@ -89,13 +80,13 @@ const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
                     habitColor={newHabit.color}
                     key={index}
                     newReminder={newReminder}
-                    openHabitTimePicker={openHabitTimePicker}
+                    openTimePicker={openTimePicker}
                     deleteNewReminder={deleteNewReminder}
                   />
                 ))}
               </View>
             </Animated.View>
-            {isHabitTimePickerShown && (
+            {isTimePickerOpen && (
               <DateTimePicker
                 style={{
                   backgroundColor: "black",
@@ -139,7 +130,7 @@ const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
 export default ReminderBottomSheet;
 
 interface NewReminderProps {
-  openHabitTimePicker: () => void;
+  openTimePicker: () => void;
   habitColor: string;
   deleteNewReminder: (reminderId: number) => void;
   newReminder: Reminder;
@@ -147,7 +138,7 @@ interface NewReminderProps {
 }
 
 const NewReminder: FC<NewReminderProps> = ({
-  openHabitTimePicker,
+  openTimePicker,
   habitColor,
   deleteNewReminder,
   newReminder,
@@ -190,7 +181,7 @@ const NewReminder: FC<NewReminderProps> = ({
         ))}
       </View>
       <TouchableOpacity
-        onPress={openHabitTimePicker}
+        onPress={openTimePicker}
         className="flex items-center justify-center w-full
       bg-[#161617] flex-row rounded-xl border border-gray-700"
       >
