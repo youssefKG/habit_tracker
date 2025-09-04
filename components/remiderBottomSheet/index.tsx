@@ -1,56 +1,58 @@
-import { FC, Ref, useState } from "react";
+import { FC, Ref, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
-  BottomSheetScrollView,
+  BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import RenderIcon from "../RenderIcon";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Reminder } from "@/types/habit.type";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import { NewHabit, Reminder } from "@/types/habit.type";
 import Animated, { FadeIn, Layout } from "react-native-reanimated";
+import { ScrollView } from "react-native-gesture-handler";
 
 interface ReminderBottomSheetProps {
+  timePickerDate: Date;
   ref: Ref<BottomSheetModal>;
-  reminders: Reminder[];
-  habitColor: string;
+  newHabit: NewHabit;
+  newReminders: Reminder[];
+  isTimePickerOpen: boolean;
+  addNewReminder: () => void;
+  onChangeNewReminderTime: (
+    _: DateTimePickerEvent,
+    selectedDate?: Date,
+  ) => void;
+  handleSaveNewReminders: (newReminders: Reminder[]) => void;
+  onSave: () => void;
+  onClose: () => void;
+  toggleNewReminderDay: (day: string, reminderId: number) => void;
+  deleteNewReminder: (NewReminderId: number) => void;
+  openTimePicker: () => void;
 }
 
 const daysOfWeek = ["Mon", "Tues", "Wed", "Thu", "Friy", "Sat", "Sun"];
-
 const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
   ref,
-  reminders,
-  habitColor,
+  newReminders,
+  handleSaveNewReminders,
+  timePickerDate,
+  newHabit,
+  isTimePickerOpen,
+  onChangeNewReminderTime,
+  onClose,
+  openTimePicker,
+  onSave,
+  toggleNewReminderDay,
+  deleteNewReminder,
+  addNewReminder,
 }) => {
-  const [date, setDate] = useState(new Date(1598051730000));
   const [isHabitTimePickerShown, setIsHabitTimePickerShown] =
     useState<boolean>(false);
 
-  const [newReminders, setNewRemindes] = useState<Reminder[]>([]);
-
   const openHabitTimePicker = () => {
     setIsHabitTimePickerShown(true);
-  };
-
-  const onChangeHabitTime = (_, selectedDate?: Date) => {
-    const currentDate = selectedDate ? selectedDate : new Date();
-    setDate(currentDate);
-    setIsHabitTimePickerShown(false);
-  };
-
-  const AddNewReminder = (): void => {
-    const time = new Date();
-    const days = ["Mon", "Tues", "Wed", "Thu", "Friy"];
-    setNewRemindes([...newReminders, { time, days, id: reminders.length + 1 }]);
-  };
-
-  const deleteNewReminder = (reminderId: number) => {
-    setNewRemindes((prevNewReminders: Reminder[]) =>
-      prevNewReminders.filter(
-        (reminder: Reminder) => reminder.id === reminderId,
-      ),
-    );
   };
 
   return (
@@ -67,24 +69,32 @@ const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
       snapPoints={["60%"]}
       stackBehavior="push"
       enablePanDownToClose={true}
+      onDismiss={onClose}
       ref={ref}
     >
-      <BottomSheetScrollView className="flex flex-1 gap-4 h-full p-4 bg-[#161617]">
-        <View className="flex gap-4">
-          <Text className="text-white text-xl">Habit Reminder</Text>
-          <Animated.View
-            entering={FadeIn.duration(300)}
-            exiting={FadeIn.duration(200)}
-            className="flex gap-3"
-            layout={Layout.springify()}
-          >
-            {newReminders.map((reminder: Reminder, index: number) => (
-              <NewReminder
-                habitColor={habitColor}
-                key={index}
-                openHabitTimePicker={openHabitTimePicker}
-              />
-            ))}
+      <BottomSheetView className="flex relative flex-1 w-full gap-4 h-full p-4 bg-[#161617]">
+        <ScrollView>
+          <View className="flex gap-4 mb-20 ">
+            <Text className="text-white text-xl">Habit Reminder</Text>
+            <Animated.View
+              entering={FadeIn.duration(300)}
+              exiting={FadeIn.duration(200)}
+              className="flex gap-3"
+              layout={Layout.springify()}
+            >
+              <View className="flex gap-2">
+                {newReminders.map((newReminder: Reminder, index: number) => (
+                  <NewReminder
+                    toggleDay={toggleNewReminderDay}
+                    habitColor={newHabit.color}
+                    key={index}
+                    newReminder={newReminder}
+                    openHabitTimePicker={openHabitTimePicker}
+                    deleteNewReminder={deleteNewReminder}
+                  />
+                ))}
+              </View>
+            </Animated.View>
             {isHabitTimePickerShown && (
               <DateTimePicker
                 style={{
@@ -94,31 +104,34 @@ const ReminderBottomSheet: FC<ReminderBottomSheetProps> = ({
                 is24Hour={true}
                 mode="time"
                 testID="datetimepicker"
-                value={date}
-                onChange={onChangeHabitTime}
+                value={timePickerDate}
+                onChange={onChangeNewReminderTime}
               />
             )}
-          </Animated.View>
-          <TouchableOpacity
-            style={{ backgroundColor: habitColor }}
-            onPress={AddNewReminder}
-            className="flex p-2 rounded  justify-center items-center "
-          >
-            <View className="flex flex-row items-center gap-2">
-              <RenderIcon
-                library="Ionicons"
-                name="notifications-outline"
-                size={24}
-                color="white"
-              />
-              <Text className="text-white">Add Reminder</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity className="flex self-end  w-full justify-self-end  items-center bg-[#343a40] mt-6 rounded justify-center border border-gray-500 p-2">
-            <Text className="text-white text-xl">Save</Text>
-          </TouchableOpacity>
-        </View>
-      </BottomSheetScrollView>
+            <TouchableOpacity
+              style={{ backgroundColor: newHabit.color }}
+              onPress={addNewReminder}
+              className="flex p-2 rounded  justify-center items-center "
+            >
+              <View className="flex flex-row items-center gap-2">
+                <RenderIcon
+                  library="Ionicons"
+                  name="notifications-outline"
+                  size={24}
+                  color="white"
+                />
+                <Text className="text-white">Add Reminder</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <TouchableOpacity
+          onPress={onSave}
+          className="flex  w-3/4 self-center absolute bottom-3 justify-self-end  items-center bg-[#343a40] mt-6 rounded justify-center border border-gray-500 p-2"
+        >
+          <Text className="text-white text-xl">Save</Text>
+        </TouchableOpacity>
+      </BottomSheetView>
     </BottomSheetModal>
   );
 };
@@ -129,16 +142,23 @@ interface NewReminderProps {
   openHabitTimePicker: () => void;
   habitColor: string;
   deleteNewReminder: (reminderId: number) => void;
+  newReminder: Reminder;
+  toggleDay: (day: string, reminderId: number) => void;
 }
+
 const NewReminder: FC<NewReminderProps> = ({
   openHabitTimePicker,
   habitColor,
+  deleteNewReminder,
+  newReminder,
+  toggleDay,
 }) => {
   return (
     <View className="flex gap-3 bg-black p-2 rounded-lg border border-gray-600">
       <View className="flex items-center flex-row justify-between">
-        <Text className="text-gray-400">Reminder 1</Text>
+        <Text className="text-gray-400">Reminder {newReminder.id}</Text>
         <TouchableOpacity
+          onPress={() => deleteNewReminder(newReminder.id)}
           className="flex items-center justify-center p-px
       self-end bg-gray-800 rounded-full w-8 h-8"
         >
@@ -151,11 +171,14 @@ const NewReminder: FC<NewReminderProps> = ({
         </TouchableOpacity>
       </View>
       <View className="flex flex-row gap-1 ">
-        {daysOfWeek.map((day: string, index: number) => (
+        {daysOfWeek.map((day: string) => (
           <TouchableOpacity
+            onPress={() => toggleDay(day, newReminder.id)}
             key={day}
             style={{
-              backgroundColor: index < 3 ? habitColor : undefined,
+              backgroundColor: newReminder.days.includes(day)
+                ? habitColor
+                : undefined,
             }}
             className="p-2 flex items-center justify-center flex-1 rounded-lg
             border border-gray-600"

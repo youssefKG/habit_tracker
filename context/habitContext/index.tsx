@@ -1,4 +1,10 @@
-import { createContext, FC, PropsWithChildren, useState } from "react";
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HabitHeader from "@/components/HabitHeader";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
@@ -7,29 +13,31 @@ import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
 import FrequencyBottomSheet from "@/components/frequencyBottomSheet";
 import IconsBottomSheet from "@/components/IconsBottomSheet";
 import AddNewCategoryBottomSheet from "@/components/addCategoryBottomSheet";
-import { FrequencyType, NewHabit } from "@/types/habit.type";
+import { FrequencyType, NewHabit, Reminder } from "@/types/habit.type";
 import ReminderBottomSheet from "@/components/remiderBottomSheet";
+import useNewHabit from "@/hooks/useNewHabit";
 
 interface HabitContextI {}
 
 const HabitContext = createContext<HabitContextI>({} as HabitContextI);
 
-const newHabitDefaultValues: NewHabit = {
-  name: "",
-  description: "",
-  frequency: "none",
-  reminders: [],
-  category: "",
-  color: "#FF6B6B",
-};
-
 const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [newHabit, setNewHabit] = useState<NewHabit>(newHabitDefaultValues);
-
-  const handleChange = (name: string, value: string) => {
-    setNewHabit({ ...newHabit, [name]: value });
-    console.log(newHabit);
-  };
+  const {
+    newHabit,
+    handleNewHabitFieldChange,
+    onSaveNewReminders,
+    clearNewReminders,
+    toggleNewReminderDay,
+    newReminders,
+    isTimePickerOpen,
+    openTimePicker,
+    deleteNewReminder,
+    addNewReminder,
+    reminderBottomSheetRef,
+    onChangeNewReminderTime,
+    timePickerDate,
+    onOpenReminderBottomSheet,
+  } = useNewHabit();
 
   const [
     createHabitBottomSheetRef,
@@ -40,11 +48,6 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     categoriesBottomSheetRef,
     openCategoriesBottomSheet,
     closeCategoriesBottomSheet,
-  ] = useBottomSheetModal();
-  const [
-    reminderBottomSheetRef,
-    openReminderBottomSheet,
-    closeReminderBottomSheet,
   ] = useBottomSheetModal();
 
   const [
@@ -62,6 +65,16 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
   const [iconsBottomSheetRef, openIconsBottomSheet, closeIconsBottomSheet] =
     useBottomSheetModal();
 
+  const handleSaveNewReminders = (newReminders: Reminder[]) => {
+    setNewHabit((prevNewHabit) => ({
+      ...prevNewHabit,
+      reminders: [...newReminders],
+    }));
+  };
+
+  useEffect(() => {
+    console.log("new habit", newHabit);
+  }, []);
   return (
     <HabitContext.Provider value={{}}>
       <SafeAreaView style={{ flex: 1 }}>
@@ -69,7 +82,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
         {children}
         <CreateHabitBottomSheet
           newHabit={newHabit}
-          handleChange={handleChange}
+          handleChange={handleNewHabitFieldChange}
           onClose={closeCreateHabitBottomSheet}
           createHabitBottomSheetRef={createHabitBottomSheetRef}
           openCategoriesBottomSheet={openCategoriesBottomSheet}
@@ -83,7 +96,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
         />
         <FrequencyBottomSheet
           handleChangeFrenquency={(value: FrequencyType) =>
-            handleChange("frequency", value)
+            handleNewHabitFieldChange("frequency", value)
           }
           frequency={newHabit.frequency}
           close={closeFrequencyBottomSheet}
@@ -98,9 +111,10 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
           ref={iconsBottomSheetRef}
         />
         <ReminderBottomSheet
-          habitColor={newHabit.color}
           ref={reminderBottomSheetRef}
-          reminders={newHabit.reminders}
+          handleSaveNewReminders={handleSaveNewReminders}
+          closeReminderBottomSheet={closeReminderBottomSheet}
+          newHabit={newHabit}
         />
       </SafeAreaView>
     </HabitContext.Provider>

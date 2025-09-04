@@ -15,7 +15,7 @@ type NewHabit = {
 };
 
 interface Reminder {
-  id?: number;
+  id: number;
   time: Date;
   days: string[];
 }
