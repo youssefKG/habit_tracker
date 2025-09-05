@@ -6,13 +6,20 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true
   },
+  "strict": false,
+  "ellowSyntheticDefaultImports": true,
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts"
-  ]
+  ],
+
+
 }

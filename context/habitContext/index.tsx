@@ -26,7 +26,6 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     newHabit,
     handleNewHabitFieldChange,
     onSaveNewReminders,
-    clearNewReminders,
     toggleNewReminderDay,
     newReminders,
     isTimePickerOpen,

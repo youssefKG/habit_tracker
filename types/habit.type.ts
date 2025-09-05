@@ -11,7 +11,7 @@ type NewHabit = {
   color: string;
   frequency: FrequencyType;
   reminders: Reminder[];
-  category: string;
+  categories: number[];
 };
 
 interface Reminder {
