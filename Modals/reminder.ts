@@ -1,13 +1,27 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Day } from "./day";
+import { Habit } from "./habit";
 
 @Entity()
 export class Reminder {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: "int" })
   id!: number;
 
-  @Column()
+  @Column({ type: "varchar" })
   time!: string;
 
-  @Column({ type: "integer", generated: "increment" })
+  @Column({ type: "integer" })
   index!: number;
+
+  @OneToMany(() => Day, (day) => day.reminder, { cascade: true })
+  days!: Day[];
+
+  @ManyToOne(() => Habit, (habit) => habit.reminders, { onDelete: "CASCADE" })
+  habit!: Habit;
 }

@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import "../global.css";
 import GlobalContextProvider from "@/context/globlaContext";
+import "reflect-metadata";
 
 import { useColorScheme } from "@/components/useColorScheme";
 

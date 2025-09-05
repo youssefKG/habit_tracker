@@ -1,13 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Category } from "./category";
 
 @Entity()
 export class Icon {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: "int" })
   id!: number;
 
-  @Column()
+  @Column({ type: "varchar" })
   name!: string;
 
-  @Column()
+  @Column({ type: "varchar" })
   library!: string;
+
+  @OneToMany(() => Category, (category) => category.icon)
+  categories!: Category[];
 }

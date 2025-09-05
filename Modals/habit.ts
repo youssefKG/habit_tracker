@@ -1,30 +1,50 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
+import { Log } from "./log";
+import { Reminder } from "./reminder";
+import { Category } from "./category";
 
-enum Frequency {
-  NONE = "none",
-  DAILY = "daily",
-  MONTHLY = "monthly",
-  WEEK = "week",
-}
+// enum Frequency {
+//   NONE = "none",
+//   DAILY = "daily",
+//   MONTHLY = "monthly",
+//   WEEK = "week",
+// }
 
 @Entity()
 export class Habit {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: "int" })
   id!: number;
 
-  @Column()
+  @Column({ type: "varchar" })
   name!: string;
 
-  @Column()
+  @Column({ type: "varchar" })
   description!: string;
 
-  @Column()
+  @Column({ type: "varchar" })
   color!: string;
 
   @Column({
-    type: "enum",
-    enum: Frequency,
-    default: Frequency.NONE,
+    type: "varchar",
+    default: "none",
   })
   frequency!: string;
+
+  @Column({ default: 1, type: "int" })
+  requiredLogs!: number;
+
+  @OneToMany(() => Log, (log) => log.habit)
+  logs!: Log[];
+
+  @OneToMany(() => Reminder, (reminder) => reminder.habit, { cascade: true })
+  reminders!: Reminder[];
+
+  @ManyToMany(() => Category, (category) => category.habits)
+  categories!: Category[];
 }
