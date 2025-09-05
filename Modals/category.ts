@@ -5,7 +5,6 @@ import {
   ManyToOne,
   ManyToMany,
 } from "typeorm";
-import { Icon } from "./icon";
 import { Habit } from "./habit";
 
 @Entity()
@@ -16,8 +15,11 @@ export class Category {
   @Column({ type: "varchar" })
   name!: string;
 
-  @ManyToOne(() => Icon, (icon) => icon.categories)
-  icon!: Icon;
+  @Column({ type: "varchar" })
+  icon!: string;
+
+  @Column({ type: "varchar" })
+  library!: string;
 
   @ManyToMany(() => Habit, (habit) => habit.categories)
   habits!: Habit[];
