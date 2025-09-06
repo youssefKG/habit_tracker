@@ -46,7 +46,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
               <Text className="text-gray-300">Frequency</Text>
               <TouchableOpacity
                 onPress={openFrequencyBottomSheet}
-                className="rounded-xl flex flex-row justify-between items-center p-3 bg-black border border-gray-600"
+                className="rounded-lg flex flex-row justify-between items-center p-3 bg-black border border-gray-600"
               >
                 <Text className="text-gray-300">None</Text>
                 <Entypo name="chevron-small-right" size={24} color="white" />
@@ -56,7 +56,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
               <Text className="text-gray-300 ">Reminder</Text>
               <TouchableOpacity
                 onPress={openReminderBottomSheet}
-                className="rounded-xl flex flex-row justify-between
+                className="rounded-lg flex flex-row justify-between
                 items-center p-3 bg-black border border-gray-600"
               >
                 <Text className="text-gray-300">None</Text>
@@ -68,7 +68,7 @@ const AdvancedOptions: FC<AdvancedOptionsProps> = ({
             <Text className="text-gray-300">Category</Text>
             <TouchableOpacity
               onPress={openCategoriesBottomSheet}
-              className="rounded-xl flex flex-row justify-between items-center
+              className="rounded-lg flex flex-row justify-between items-center
               p-3 bg-black border border-gray-600"
             >
               <Text className="text-gray-300">None</Text>

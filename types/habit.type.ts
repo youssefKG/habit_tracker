@@ -12,6 +12,7 @@ type NewHabit = {
   frequency: FrequencyType;
   reminders: Reminder[];
   categories: number[];
+  targetPerDay: number;
 };
 
 interface Reminder {
@@ -20,4 +21,12 @@ interface Reminder {
   days: string[];
 }
 
-export type { NewHabit, FrequencyType, ReminderDateType, Reminder };
+type NewHabitKeys = keyof NewHabit;
+
+export type {
+  NewHabit,
+  FrequencyType,
+  ReminderDateType,
+  Reminder,
+  NewHabitKeys,
+};

@@ -3,6 +3,7 @@ import { NewHabit, Reminder } from "@/types/habit.type";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import useBottomSheetModal from "../useBottomSheet";
 import { Category } from "@/types/category";
+import { parse } from "path";
 
 const newHabitDefaultValues: NewHabit = {
   name: "",
@@ -11,6 +12,7 @@ const newHabitDefaultValues: NewHabit = {
   reminders: [],
   categories: [],
   color: "#FF6B6B",
+  targetPerDay: 1,
 };
 
 const defaultNewCategory = {
@@ -44,8 +46,14 @@ const useNewHabit = () => {
     useBottomSheetModal();
 
   // fieldes changes (name, description...)
-  const handleNewHabitFieldChange = (key: string, value: string) => {
-    setNewHabit((prevNewHabit) => ({ ...prevNewHabit, [key]: value }));
+  const handleNewHabitFieldChange = (key: keyof NewHabit, value: string) => {
+    if (key === "targetPerDay") {
+      if (/^\d*$/.test(value)) {
+        setNewHabit((prev) => ({ ...prev, targetPerDay: parseInt(value) }));
+      }
+    } else {
+      setNewHabit((prevNewHabit) => ({ ...prevNewHabit, [key]: value }));
+    }
   };
 
   // reminders  start
@@ -137,8 +145,28 @@ const useNewHabit = () => {
   };
 
   const addNewCategory = () => {};
-
   // categories end
+
+  // completions per day start
+
+  const incrementTargetPerDay = () => {
+    if (newHabit.targetPerDay < 10) {
+      setNewHabit((prev) => ({ ...prev, targetPerDay: prev.targetPerDay + 1 }));
+    }
+  };
+  const decrementTargetPerDay = () => {
+    console.log("increment");
+    if (newHabit.targetPerDay > 1) {
+      setNewHabit((prev) => ({ ...prev, targetPerDay: prev.targetPerDay - 1 }));
+    }
+  };
+
+  const handleChangeTargetPerDay = (value: string) => {
+    if (/^\d*$/.test(value)) {
+      setNewHabit((prev) => ({ ...prev, targetPerDay: parseInt(value) }));
+    }
+  };
+  // completions per day end
 
   return {
     newHabit,
@@ -156,6 +184,9 @@ const useNewHabit = () => {
     timePickerDate,
     onOpenReminderBottomSheet,
     onCloseReminderBottomSheet,
+    incrementTargetPerDay,
+    decrementTargetPerDay,
+    handleChangeTargetPerDay,
   };
 };
 export default useNewHabit;

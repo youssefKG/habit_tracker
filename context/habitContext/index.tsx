@@ -37,6 +37,8 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     timePickerDate,
     onOpenReminderBottomSheet,
     onCloseReminderBottomSheet,
+    incrementTargetPerDay,
+    decrementTargetPerDay,
   } = useNewHabit();
 
   const [
@@ -75,6 +77,8 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
         {children}
         <CreateHabitBottomSheet
           newHabit={newHabit}
+          incrementTargetPerDay={incrementTargetPerDay}
+          decrementTargetPerDay={decrementTargetPerDay}
           handleChange={handleNewHabitFieldChange}
           onClose={closeCreateHabitBottomSheet}
           createHabitBottomSheetRef={createHabitBottomSheetRef}

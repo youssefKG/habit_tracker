@@ -14,17 +14,20 @@ import {
 import HabitColors from "../habitColors";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AdvancedOptions from "../advancedOptions/inde";
-import { NewHabit } from "@/types/habit.type";
+import { NewHabit, NewHabitKeys } from "@/types/habit.type";
+import TargetPerDay from "../targetPerDay";
 
 interface CreateBottomSheetProps {
   newHabit: NewHabit;
   createHabitBottomSheetRef: Ref<BottomSheetModal>;
-  handleChange: (name: string, value: string) => void;
+  handleChange: (name: NewHabitKeys, value: string) => void;
   onClose: (_: number) => void;
   openCategoriesBottomSheet: () => void;
   closeCategoriesBottomSheet: () => void;
   openFrequencyBottomSheet: () => void;
   openReminderBottomSheet: () => void;
+  decrementTargetPerDay: () => void;
+  incrementTargetPerDay: () => void;
 }
 
 const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
@@ -35,6 +38,8 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   openFrequencyBottomSheet,
   createHabitBottomSheetRef,
   openReminderBottomSheet,
+  incrementTargetPerDay,
+  decrementTargetPerDay,
 }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
     useState<boolean>(true);
@@ -42,6 +47,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   const toogleAdvancesOptions = () => {
     setIsAdvancedOptionsOpen(!isAdvancedOptionsOpen);
   };
+
   return (
     <BottomSheetModal
       snapPoints={["90%"]}
@@ -74,7 +80,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
                 <TextInput
                   value={newHabit.name}
                   onChangeText={(value: string) => handleChange("name", value)}
-                  className="bg-black p-2 rounded-xl border border-gray-600"
+                  className="bg-black p-2 rounded-lg border border-gray-600"
                 />
               </View>
               <View className="flex gap-1">
@@ -84,7 +90,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
                   onChangeText={(value: string) =>
                     handleChange("description", value)
                   }
-                  className="bg-black p-2 rounded-xl border border-gray-600"
+                  className="bg-black p-2 rounde-lg border border-gray-600"
                 />
               </View>
               <HabitColors
@@ -98,11 +104,20 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
                 openFrequencyBottomSheet={openFrequencyBottomSheet}
                 openReminderBottomSheet={openReminderBottomSheet}
               />
+              <TargetPerDay
+                target={newHabit.targetPerDay}
+                habitColor={newHabit.color}
+                increment={incrementTargetPerDay}
+                decrement={decrementTargetPerDay}
+                handleChange={(targetPerDay: string) =>
+                  handleChange("targetPerDay", targetPerDay)
+                }
+              />
             </View>
           </ScrollView>
           <TouchableOpacity
             className="bg-black/40 shadow-cyan-600 border
-          border-gray-700 p-2 tracking-[1px] absolute bottom-6 w-[60%] self-center rounded-xl"
+          border-gray-700 p-2 tracking-[1px] absolute bottom-6 w-[60%] self-center rounded-lg"
           >
             <Text className="text-gray-200 text-xl text-center">Save</Text>
           </TouchableOpacity>

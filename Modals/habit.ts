@@ -36,6 +36,9 @@ export class Habit {
   })
   frequency!: string;
 
+  @Column({ type: "integer" })
+  targetPerDay!: number;
+
   @Column({ default: 1, type: "int" })
   requiredLogs!: number;
 
