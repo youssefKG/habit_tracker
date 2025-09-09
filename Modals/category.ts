@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  OneToMany,
 } from "typeorm";
 import { Habit } from "./habit";
 
@@ -21,6 +22,6 @@ export class Category {
   @Column({ type: "varchar" })
   library!: string;
 
-  @ManyToMany(() => Habit, (habit) => habit.categories)
+  @OneToMany(() => Habit, (habit) => habit.categories)
   habits!: Habit[];
 }

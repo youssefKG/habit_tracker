@@ -4,18 +4,23 @@ import {
   FC,
   useEffect,
   useState,
+  useContext,
 } from "react";
 import { DataSource } from "typeorm";
 import { Habit, Log, Reminder, Category, Day } from "@/Modals";
-import HabitRepository from "@/repositories/HabitRepositories";
-import CategoryRepository from "@/repositories/category";
-import ReminderRepository from "@/repositories/reminderRepository";
+import {
+  DayRepository,
+  ReminderRepository,
+  HabitRepository,
+  CategoryRepository,
+} from "@/repositories";
 
 interface DbContextInterface {
   dataSource: DataSource | null;
   habitRebository: HabitRepository;
   categoryRepositroy: CategoryRepository;
   reminderRepository: ReminderRepository;
+  dayRepository: DayRepository;
 }
 
 const DbContext = createContext<DbContextInterface>({} as DbContextInterface);
@@ -51,6 +56,7 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
           habitRebository: new HabitRepository(dataSource),
           reminderRepository: new ReminderRepository(dataSource),
           categoryRepositroy: new CategoryRepository(dataSource),
+          dayRepository: new DayRepository(dataSource),
         }}
       >
         {children}
@@ -59,4 +65,10 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
+const useDataSource = () => {
+  return useContext(DbContext);
+};
+
 export default DbProvider;
+
+export { useDataSource };

@@ -3,8 +3,8 @@ import { DataSource, Repository } from "typeorm";
 
 interface ReminderRepositoryI {
   create: (reminder: Omit<Reminder, "id">) => Promise<Reminder>;
-  update: (newReminder: Reminder) => Promise<Reminder>;
-  delete: () => Promise<void>;
+  update: (newReminder: Reminder) => Promise<Reminder | null>;
+  delete: (remiderId: number) => Promise<void>;
   getAll: () => Promise<Reminder[]>;
 }
 
@@ -31,6 +31,7 @@ class ReminderRepository implements ReminderRepositoryI {
       updatedReminder.index = newReminder.index;
       await this.ormReminder.save(updatedReminder);
     }
+    return updatedReminder;
   }
 
   async create(reminder: Omit<Reminder, "id">) {
@@ -40,7 +41,12 @@ class ReminderRepository implements ReminderRepositoryI {
   }
 
   async delete(reminderId: number) {
-    await this.ormReminder.delete(reminderId);
+    const deletedReminders = await this.ormReminder.delete(reminderId);
+  }
+
+  public async saveMany(reminders: Reminder[]) {
+    const insertedReminders = await this.ormReminder.save(reminders);
+    return insertedReminders;
   }
 }
 

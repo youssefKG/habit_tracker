@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   ManyToMany,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -48,6 +49,6 @@ export class Habit {
   @OneToMany(() => Reminder, (reminder) => reminder.habit, { cascade: true })
   reminders!: Reminder[];
 
-  @ManyToMany(() => Category, (category) => category.habits)
-  categories!: Category[];
+  @ManyToOne(() => Category, (category) => category.habits)
+  categories!: Category;
 }

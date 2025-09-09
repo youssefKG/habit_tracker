@@ -1,10 +1,11 @@
 type Category = {
   name: string;
-  icon?: IconType;
+  library: string;
+  icon: "";
 };
 
 type IconType = {
-  id: number;
+  id?: number;
   name: string;
   library: string;
 };

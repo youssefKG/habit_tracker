@@ -1,3 +1,5 @@
+import { Category } from "./category";
+
 type FrequencyType = "none" | "daily" | "week" | "monthly";
 
 type ReminderDateType = {
@@ -11,14 +13,16 @@ type NewHabit = {
   color: string;
   frequency: FrequencyType;
   reminders: Reminder[];
-  categories: number[];
+  categories: Category;
   targetPerDay: number;
+  requiredLogs: number;
 };
 
 interface Reminder {
   id: number;
   time: Date;
   days: string[];
+  index: number;
 }
 
 type NewHabitKeys = keyof NewHabit;

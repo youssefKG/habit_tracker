@@ -3,16 +3,21 @@ import { NewHabit, Reminder } from "@/types/habit.type";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import useBottomSheetModal from "../useBottomSheet";
 import { Category } from "@/types/category";
-import { parse } from "path";
+import { useDataSource } from "@/context/dbContext";
 
 const newHabitDefaultValues: NewHabit = {
   name: "",
   description: "",
   frequency: "none",
   reminders: [],
-  categories: [],
+  categories: {
+    name: "",
+    icon: "",
+    library: "",
+  },
   color: "#FF6B6B",
   targetPerDay: 1,
+  requiredLogs: 1,
 };
 
 const defaultNewCategory = {
@@ -26,6 +31,12 @@ const useNewHabit = () => {
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
   const [selectedCategories, setSeletectedCategories] = useState<number[]>([]);
   const [newCategory, setNewCategory] = useState<Category>(defaultNewCategory);
+
+  // context start
+  const { habitRebository, reminderRepository, dayRepository } =
+    useDataSource();
+  // context end
+
   // modals  start
   const [
     reminderBottomSheetRef,
@@ -75,7 +86,12 @@ const useNewHabit = () => {
     const days = ["Mon", "Tues", "Wed", "Thu", "Friy"];
     setNewReminders((prevNewReminders) => [
       ...prevNewReminders,
-      { time, days, id: prevNewReminders.length + 1 },
+      {
+        time,
+        days,
+        id: prevNewReminders.length + 1,
+        index: prevNewReminders.length + 1,
+      },
     ]);
   };
 
@@ -151,13 +167,19 @@ const useNewHabit = () => {
 
   const incrementTargetPerDay = () => {
     if (newHabit.targetPerDay < 10) {
-      setNewHabit((prev) => ({ ...prev, targetPerDay: prev.targetPerDay + 1 }));
+      setNewHabit((prev) => ({
+        ...prev,
+        targetPerDay: prev.targetPerDay + 1,
+      }));
     }
   };
   const decrementTargetPerDay = () => {
     console.log("increment");
     if (newHabit.targetPerDay > 1) {
-      setNewHabit((prev) => ({ ...prev, targetPerDay: prev.targetPerDay - 1 }));
+      setNewHabit((prev) => ({
+        ...prev,
+        targetPerDay: prev.targetPerDay - 1,
+      }));
     }
   };
 
@@ -165,6 +187,25 @@ const useNewHabit = () => {
     if (/^\d*$/.test(value)) {
       setNewHabit((prev) => ({ ...prev, targetPerDay: parseInt(value) }));
     }
+  };
+
+  const saveNewHabit = async () => {
+    // save reminders
+    const savedHabit = await habitRebository.create({
+      name: newHabit.name,
+      description: newHabit.description,
+      color: newHabit.color,
+      frequency: newHabit.frequency,
+      targetPerDay: newHabit.targetPerDay,
+      requiredLogs: newHabit.requiredLogs,
+      reminders: newHabit.reminders.map((reminder) => ({
+        time: reminder.time.getTime().toString(),
+        index: reminder.index,
+        days: reminder.days.map((d) => ({ day: d })),
+      })),
+      logs: [],
+      categories: newHabit.categories,
+    });
   };
   // completions per day end
 
