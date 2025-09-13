@@ -20,8 +20,10 @@ const newHabitDefaultValues: NewHabit = {
   requiredLogs: 1,
 };
 
-const defaultNewCategory = {
+const defaultNewCategory: Category = {
   name: "",
+  icon: "",
+  library: "",
 };
 
 const useNewHabit = () => {
@@ -29,7 +31,9 @@ const useNewHabit = () => {
   const [newReminders, setNewReminders] = useState<Reminder[]>([]);
   const [timePickerDate, setTimePickerDate] = useState<Date>(new Date());
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
-  const [selectedCategories, setSeletectedCategories] = useState<number[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
   const [newCategory, setNewCategory] = useState<Category>(defaultNewCategory);
 
   // context start
@@ -55,6 +59,18 @@ const useNewHabit = () => {
   ] = useBottomSheetModal();
   const [iconsBottomSheetRef, openIconsBottomSheet, closeIconsBottmSheet] =
     useBottomSheetModal();
+
+  const [
+    newHabitBottomSheetRef,
+    openNewHabitBottomSheet,
+    closeNewHabitBottomSheet,
+  ] = useBottomSheetModal();
+
+  // new habit
+  const onCloseNewHabitBottomSheet = () => {
+    setNewHabit(newHabitDefaultValues);
+    closeNewHabitBottomSheet();
+  };
 
   // fieldes changes (name, description...)
   const handleNewHabitFieldChange = (key: keyof NewHabit, value: string) => {
@@ -145,19 +161,8 @@ const useNewHabit = () => {
   // reminder end
 
   // categories start
-  const selectCategories = (categoryId: number) => {
-    setSeletectedCategories([...selectedCategories, categoryId]);
-  };
-
-  const onSaveCategoris = () => {
-    setNewHabit({ ...newHabit, categories: selectedCategories });
-    setSeletectedCategories([]);
-    closeCategoriesBottomSheet();
-  };
-
-  const onCloseCategoriesBottomSheet = () => {
-    setNewCategory(defaultNewCategory);
-    setSeletectedCategories([]);
+  const selectCategories = (category: Category) => {
+    setSelectedCategory(category);
   };
 
   const addNewCategory = () => {};
@@ -206,6 +211,8 @@ const useNewHabit = () => {
       logs: [],
       categories: newHabit.categories,
     });
+    setNewHabit(newHabitDefaultValues);
+    closeNewCategoryBottomSheet();
   };
   // completions per day end
 
@@ -228,6 +235,10 @@ const useNewHabit = () => {
     incrementTargetPerDay,
     decrementTargetPerDay,
     handleChangeTargetPerDay,
+    newHabitBottomSheetRef,
+    openNewHabitBottomSheet,
+    closeNewHabitBottomSheet,
+    onCloseNewHabitBottomSheet,
   };
 };
 export default useNewHabit;

@@ -19,9 +19,9 @@ import TargetPerDay from "../targetPerDay";
 
 interface CreateBottomSheetProps {
   newHabit: NewHabit;
-  createHabitBottomSheetRef: Ref<BottomSheetModal>;
+  newHabitBottomSheetRef: Ref<BottomSheetModal>;
   handleChange: (name: NewHabitKeys, value: string) => void;
-  onClose: (_: number) => void;
+  onClose: () => void;
   openCategoriesBottomSheet: () => void;
   closeCategoriesBottomSheet: () => void;
   openFrequencyBottomSheet: () => void;
@@ -36,7 +36,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   onClose,
   openCategoriesBottomSheet,
   openFrequencyBottomSheet,
-  createHabitBottomSheetRef,
+  newHabitBottomSheetRef,
   openReminderBottomSheet,
   incrementTargetPerDay,
   decrementTargetPerDay,
@@ -52,10 +52,11 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
     <BottomSheetModal
       snapPoints={["90%"]}
       index={1}
-      ref={createHabitBottomSheetRef}
+      ref={newHabitBottomSheetRef}
       style={{
         flex: 1,
       }}
+      onDismiss={onClose}
       backdropComponent={(props) => (
         <BottomSheetBackdrop
           {...props}
@@ -68,7 +69,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
       <BottomSheetView className="flex-1 h-full z-40 p-4 bg-[#161617] relative">
         <View className="relative flex-1 z-30">
           <View className="flex flex-row items-center gap-8">
-            <TouchableOpacity onPress={() => onClose(-1)} className="">
+            <TouchableOpacity onPress={() => onClose()} className="">
               <Ionicons name="close" size={24} color="white" />
             </TouchableOpacity>
             <Text className="font-medium text-xl text-white">New Habit</Text>

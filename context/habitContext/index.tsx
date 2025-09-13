@@ -1,10 +1,4 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, FC, PropsWithChildren, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HabitHeader from "@/components/HabitHeader";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
@@ -13,7 +7,7 @@ import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
 import FrequencyBottomSheet from "@/components/frequencyBottomSheet";
 import IconsBottomSheet from "@/components/IconsBottomSheet";
 import AddNewCategoryBottomSheet from "@/components/addCategoryBottomSheet";
-import { FrequencyType, NewHabit, Reminder } from "@/types/habit.type";
+import { FrequencyType } from "@/types/habit.type";
 import ReminderBottomSheet from "@/components/remiderBottomSheet";
 import useNewHabit from "@/hooks/useNewHabit";
 
@@ -39,6 +33,11 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     onCloseReminderBottomSheet,
     incrementTargetPerDay,
     decrementTargetPerDay,
+    // new habit bottom sheet
+    newHabitBottomSheetRef,
+    openNewHabitBottomSheet,
+    closeNewHabitBottomSheet,
+    onCloseNewHabitBottomSheet,
   } = useNewHabit();
 
   const [
@@ -73,15 +72,15 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
   return (
     <HabitContext.Provider value={{}}>
       <SafeAreaView style={{ flex: 1 }}>
-        <HabitHeader openCreateHabitBottomSheet={openCreateHabitBottomSheet} />
+        <HabitHeader openNewHabitBottomSheet={openNewHabitBottomSheet} />
         {children}
         <CreateHabitBottomSheet
+          newHabitBottomSheetRef={newHabitBottomSheetRef}
           newHabit={newHabit}
           incrementTargetPerDay={incrementTargetPerDay}
           decrementTargetPerDay={decrementTargetPerDay}
           handleChange={handleNewHabitFieldChange}
-          onClose={closeCreateHabitBottomSheet}
-          createHabitBottomSheetRef={createHabitBottomSheetRef}
+          onClose={onCloseNewHabitBottomSheet}
           openCategoriesBottomSheet={openCategoriesBottomSheet}
           closeCategoriesBottomSheet={closeCategoriesBottomSheet}
           openFrequencyBottomSheet={openFrequencyBottomSheet}
