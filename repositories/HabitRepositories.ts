@@ -9,12 +9,7 @@ class HabitRepository {
   }
 
   public async create(newHabit: DeepPartial<Habit>) {
-    const habit = this.ormRepositroy.create({
-      name: newHabit.name,
-      description: newHabit.description,
-      color: newHabit.color,
-      reminders: newHabit.reminders,
-    });
+    const habit = this.ormRepositroy.create(newHabit);
     await this.ormRepositroy.save(habit);
     return habit;
   }

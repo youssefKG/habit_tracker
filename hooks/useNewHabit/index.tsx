@@ -6,11 +6,11 @@ import { Category } from "@/types/category";
 import { useDataSource } from "@/context/dbContext";
 
 const newHabitDefaultValues: NewHabit = {
-  name: "",
-  description: "",
+  name: "youssef",
+  description: "the first habit",
   frequency: "none",
   reminders: [],
-  categories: {
+  category: {
     name: "",
     icon: "",
     library: "",
@@ -70,6 +70,9 @@ const useNewHabit = () => {
   const onCloseNewHabitBottomSheet = () => {
     setNewHabit(newHabitDefaultValues);
     closeNewHabitBottomSheet();
+    closeCategoriesBottomSheet();
+    closeReminderBottomSheet();
+    closeIconsBottmSheet();
   };
 
   // fieldes changes (name, description...)
@@ -195,25 +198,45 @@ const useNewHabit = () => {
   };
 
   const saveNewHabit = async () => {
+    console.log(newHabit.targetPerDay);
     // save reminders
-    const savedHabit = await habitRebository.create({
-      name: newHabit.name,
-      description: newHabit.description,
-      color: newHabit.color,
-      frequency: newHabit.frequency,
-      targetPerDay: newHabit.targetPerDay,
-      requiredLogs: newHabit.requiredLogs,
-      reminders: newHabit.reminders.map((reminder) => ({
-        time: reminder.time.getTime().toString(),
-        index: reminder.index,
-        days: reminder.days.map((d) => ({ day: d })),
-      })),
-      logs: [],
-      categories: newHabit.categories,
-    });
-    setNewHabit(newHabitDefaultValues);
-    closeNewCategoryBottomSheet();
+    try {
+      const habit = await habitRebository.create({
+        name: newHabit.name,
+        description: newHabit.description,
+        color: newHabit.color,
+        frequency: newHabit.frequency,
+        targetPerDay: newHabit.targetPerDay,
+        requiredLogs: newHabit.requiredLogs,
+        reminders: newHabit.reminders.map((reminder) => ({
+          time: reminder.time.getTime().toString(),
+          index: reminder.index,
+          days: reminder.days.map((d) => ({ day: d })),
+        })),
+        logs: [],
+        category: newHabit.category,
+      });
+      setNewHabit(newHabitDefaultValues);
+      closeNewCategoryBottomSheet();
+      closeNewHabitBottomSheet();
+      const allHabits = await habitRebository.getAll();
+      console.log("all habits ", allHabits);
+    } catch (err) {
+      console.log("error creating habit", err);
+    }
   };
+  useEffect(() => {
+    const fetchHabit = async () => {
+      try {
+        const allHabits = await habitRebository.getAll();
+        console.log("all habits ", allHabits);
+        allHabits.forEach((habit) => console.log(habit));
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    fetchHabit();
+  }, []);
   // completions per day end
 
   return {
@@ -239,6 +262,7 @@ const useNewHabit = () => {
     openNewHabitBottomSheet,
     closeNewHabitBottomSheet,
     onCloseNewHabitBottomSheet,
+    saveNewHabit,
   };
 };
 export default useNewHabit;

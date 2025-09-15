@@ -1,4 +1,10 @@
-import { createContext, FC, PropsWithChildren, useEffect } from "react";
+import {
+  createContext,
+  FC,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+} from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HabitHeader from "@/components/HabitHeader";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
@@ -11,7 +17,9 @@ import { FrequencyType } from "@/types/habit.type";
 import ReminderBottomSheet from "@/components/remiderBottomSheet";
 import useNewHabit from "@/hooks/useNewHabit";
 
-interface HabitContextI {}
+interface HabitContextI {
+  openNewHabitBottomSheet: () => void;
+}
 
 const HabitContext = createContext<HabitContextI>({} as HabitContextI);
 
@@ -38,6 +46,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     openNewHabitBottomSheet,
     closeNewHabitBottomSheet,
     onCloseNewHabitBottomSheet,
+    saveNewHabit,
   } = useNewHabit();
 
   const [
@@ -66,63 +75,60 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
   const [iconsBottomSheetRef, openIconsBottomSheet, closeIconsBottomSheet] =
     useBottomSheetModal();
 
-  useEffect(() => {
-    console.log("new habit", newHabit);
-  }, []);
   return (
-    <HabitContext.Provider value={{}}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <HabitHeader openNewHabitBottomSheet={openNewHabitBottomSheet} />
-        {children}
-        <CreateHabitBottomSheet
-          newHabitBottomSheetRef={newHabitBottomSheetRef}
-          newHabit={newHabit}
-          incrementTargetPerDay={incrementTargetPerDay}
-          decrementTargetPerDay={decrementTargetPerDay}
-          handleChange={handleNewHabitFieldChange}
-          onClose={onCloseNewHabitBottomSheet}
-          openCategoriesBottomSheet={openCategoriesBottomSheet}
-          closeCategoriesBottomSheet={closeCategoriesBottomSheet}
-          openFrequencyBottomSheet={openFrequencyBottomSheet}
-          openReminderBottomSheet={onOpenReminderBottomSheet}
-        />
-        <CategoriesBottomSheet
-          openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
-          ref={categoriesBottomSheetRef}
-        />
-        <FrequencyBottomSheet
-          handleChangeFrenquency={(value: FrequencyType) =>
-            handleNewHabitFieldChange("frequency", value)
-          }
-          frequency={newHabit.frequency}
-          close={closeFrequencyBottomSheet}
-          ref={frequencyBottomSheetRef}
-        />
-        <AddNewCategoryBottomSheet
-          openIconsBottomSheet={openIconsBottomSheet}
-          ref={addNewCategoryBottomSheetRef}
-        />
-        <IconsBottomSheet
-          closeIconsBottomSheet={closeIconsBottomSheet}
-          ref={iconsBottomSheetRef}
-        />
-        <ReminderBottomSheet
-          openTimePicker={openTimePicker}
-          deleteNewReminder={deleteNewReminder}
-          newHabit={newHabit}
-          newReminders={newReminders}
-          timePickerDate={timePickerDate}
-          toggleNewReminderDay={toggleNewReminderDay}
-          onChangeNewReminderTime={onChangeNewReminderTime}
-          addNewReminder={addNewReminder}
-          isTimePickerOpen={isTimePickerOpen}
-          ref={reminderBottomSheetRef}
-          onClose={onCloseReminderBottomSheet}
-          onSave={onSaveNewReminders}
-        />
-      </SafeAreaView>
+    <HabitContext.Provider value={{ openNewHabitBottomSheet }}>
+      {children}
+      <CreateHabitBottomSheet
+        newHabitBottomSheetRef={newHabitBottomSheetRef}
+        newHabit={newHabit}
+        incrementTargetPerDay={incrementTargetPerDay}
+        decrementTargetPerDay={decrementTargetPerDay}
+        handleChange={handleNewHabitFieldChange}
+        onClose={onCloseNewHabitBottomSheet}
+        openCategoriesBottomSheet={openCategoriesBottomSheet}
+        closeCategoriesBottomSheet={closeCategoriesBottomSheet}
+        openFrequencyBottomSheet={openFrequencyBottomSheet}
+        openReminderBottomSheet={onOpenReminderBottomSheet}
+        saveNewHabit={saveNewHabit}
+      />
+      <CategoriesBottomSheet
+        openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
+        ref={categoriesBottomSheetRef}
+      />
+      <FrequencyBottomSheet
+        handleChangeFrenquency={(value: FrequencyType) =>
+          handleNewHabitFieldChange("frequency", value)
+        }
+        frequency={newHabit.frequency}
+        close={closeFrequencyBottomSheet}
+        ref={frequencyBottomSheetRef}
+      />
+      <AddNewCategoryBottomSheet
+        openIconsBottomSheet={openIconsBottomSheet}
+        ref={addNewCategoryBottomSheetRef}
+      />
+      <IconsBottomSheet
+        closeIconsBottomSheet={closeIconsBottomSheet}
+        ref={iconsBottomSheetRef}
+      />
+      <ReminderBottomSheet
+        openTimePicker={openTimePicker}
+        deleteNewReminder={deleteNewReminder}
+        newHabit={newHabit}
+        newReminders={newReminders}
+        timePickerDate={timePickerDate}
+        toggleNewReminderDay={toggleNewReminderDay}
+        onChangeNewReminderTime={onChangeNewReminderTime}
+        addNewReminder={addNewReminder}
+        isTimePickerOpen={isTimePickerOpen}
+        ref={reminderBottomSheetRef}
+        onClose={onCloseReminderBottomSheet}
+        onSave={onSaveNewReminders}
+      />
     </HabitContext.Provider>
   );
 };
 
+const useHabitContext = () => useContext(HabitContext);
 export default HabitProvider;
+export { useHabitContext };

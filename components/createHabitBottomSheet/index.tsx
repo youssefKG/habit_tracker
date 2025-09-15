@@ -28,6 +28,7 @@ interface CreateBottomSheetProps {
   openReminderBottomSheet: () => void;
   decrementTargetPerDay: () => void;
   incrementTargetPerDay: () => void;
+  saveNewHabit: () => Promise<void>;
 }
 
 const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
@@ -39,6 +40,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
   newHabitBottomSheetRef,
   openReminderBottomSheet,
   incrementTargetPerDay,
+  saveNewHabit,
   decrementTargetPerDay,
 }) => {
   const [isAdvancedOptionsOpen, setIsAdvancedOptionsOpen] =
@@ -81,7 +83,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
                 <TextInput
                   value={newHabit.name}
                   onChangeText={(value: string) => handleChange("name", value)}
-                  className="bg-black p-2 rounded-lg border border-gray-600"
+                  className="bg-black text-white p-2 rounded-lg border border-gray-600"
                 />
               </View>
               <View className="flex gap-1">
@@ -91,7 +93,7 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
                   onChangeText={(value: string) =>
                     handleChange("description", value)
                   }
-                  className="bg-black p-2 rounde-lg border border-gray-600"
+                  className="bg-black text-white p-2 rounde-lg border border-gray-600"
                 />
               </View>
               <HabitColors
@@ -117,8 +119,9 @@ const CreateHabitBottomSheet: FC<CreateBottomSheetProps> = ({
             </View>
           </ScrollView>
           <TouchableOpacity
-            className="bg-black/40 shadow-cyan-600 border
-          border-gray-700 p-2 tracking-[1px] absolute bottom-6 w-[60%] self-center rounded-lg"
+            onPress={saveNewHabit}
+            className=")bg-black/40 shadow-cyan-600 border border-gray-700 p-2
+            tracking-[1px] absolute bottom-6 w-[60%] self-center rounded-lg"
           >
             <Text className="text-gray-200 text-xl text-center">Save</Text>
           </TouchableOpacity>

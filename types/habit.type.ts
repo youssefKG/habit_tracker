@@ -13,7 +13,7 @@ type NewHabit = {
   color: string;
   frequency: FrequencyType;
   reminders: Reminder[];
-  categories: Category;
+  category: Category;
   targetPerDay: number;
   requiredLogs: number;
 };

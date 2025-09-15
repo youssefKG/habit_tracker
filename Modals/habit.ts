@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -9,13 +8,6 @@ import {
 import { Log } from "./log";
 import { Reminder } from "./reminder";
 import { Category } from "./category";
-
-// enum Frequency {
-//   NONE = "none",
-//   DAILY = "daily",
-//   MONTHLY = "monthly",
-//   WEEK = "week",
-// }
 
 @Entity()
 export class Habit {
@@ -37,7 +29,7 @@ export class Habit {
   })
   frequency!: string;
 
-  @Column({ type: "integer" })
+  @Column({ type: "int" })
   targetPerDay!: number;
 
   @Column({ default: 1, type: "int" })
@@ -50,5 +42,5 @@ export class Habit {
   reminders!: Reminder[];
 
   @ManyToOne(() => Category, (category) => category.habits)
-  categories!: Category;
+  category!: Category;
 }

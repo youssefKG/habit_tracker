@@ -38,8 +38,10 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     const initializeDb = async () => {
       try {
-        const dbSource = await dbConnection.initialize();
-        setDataSource(dbSource);
+        if (!dbConnection?.isInitialized) {
+          const dbSource = await dbConnection.initialize();
+          setDataSource(dbSource);
+        }
       } catch (err) {
         console.log("errro to initialize the db ", err);
       }
