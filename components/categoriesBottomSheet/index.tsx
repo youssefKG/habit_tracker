@@ -5,18 +5,19 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from "@gorhom/bottom-sheet";
-import { IconName } from "@/types/icon";
-import Icon from "../icon";
-import categoriesData from "@/assets/categoriesData";
+import { Category } from "@/Modals";
+import RenderIcon from "../RenderIcon";
 
 interface CategoriesBottomSheetProps {
   ref: Ref<BottomSheetModal>;
   openAddNewCategoryBottomSheet: () => void;
+  categories: Category[];
 }
 
 const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
   ref,
   openAddNewCategoryBottomSheet,
+  categories,
 }) => {
   return (
     <BottomSheetModal
@@ -46,20 +47,22 @@ const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
             </Text>
           </View>
           <View className="flex flex-row gap-2 flex-wrap items-center">
-            {categoriesData.map((cat) => (
+            {categories.map((cat) => (
               <CategoryButton
                 key={cat.id}
-                icon={cat.icon as IconName}
                 name={cat.name}
+                library={cat.library}
+                icon={cat.icon}
                 id={cat.id}
                 onPress={() => {}}
               />
             ))}
             <CategoryButton
               onPress={openAddNewCategoryBottomSheet}
-              id={12341}
-              name="Add new one"
-              icon="add"
+              id={1245}
+              name="add new one"
+              library="AntDesign"
+              icon="plus"
             />
           </View>
         </View>
@@ -69,19 +72,26 @@ const CategoriesBottomSheet: FC<CategoriesBottomSheetProps> = ({
 };
 
 interface CategoryButton {
-  name: string;
   id: number;
-  icon: IconName;
+  name: string;
+  library: string;
+  icon: string;
   onPress: () => void;
 }
 
-const CategoryButton: FC<CategoryButton> = ({ name, id, icon, onPress }) => {
+const CategoryButton: FC<CategoryButton> = ({
+  name,
+  id,
+  onPress,
+  library,
+  icon,
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       className="p-px flex flex-row rounded-3xl items-center gap-1 px-4 border border-gray-600"
     >
-      <Icon name={icon} size={15} />
+      <RenderIcon library={library as any} name={icon} size={15} />
       <Text className="text-gray-400">{name}</Text>
     </TouchableOpacity>
   );

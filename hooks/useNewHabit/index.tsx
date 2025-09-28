@@ -279,6 +279,7 @@ const useNewHabit = () => {
     openNewHabitBottomSheet,
     closeNewHabitBottomSheet,
     onCloseNewHabitBottomSheet,
+    categories,
     saveNewHabit,
   };
 };

@@ -1,12 +1,4 @@
-import {
-  createContext,
-  FC,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-} from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-import HabitHeader from "@/components/HabitHeader";
+import { createContext, FC, PropsWithChildren, useContext } from "react";
 import useBottomSheetModal from "@/hooks/useBottomSheet";
 import CreateHabitBottomSheet from "@/components/createHabitBottomSheet";
 import CategoriesBottomSheet from "@/components/categoriesBottomSheet";
@@ -47,6 +39,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     closeNewHabitBottomSheet,
     onCloseNewHabitBottomSheet,
     saveNewHabit,
+    categories,
   } = useNewHabit();
 
   const [
@@ -94,6 +87,7 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
       <CategoriesBottomSheet
         openAddNewCategoryBottomSheet={openAddNewCategoryBottomSheet}
         ref={categoriesBottomSheetRef}
+        categories={categories}
       />
       <FrequencyBottomSheet
         handleChangeFrenquency={(value: FrequencyType) =>

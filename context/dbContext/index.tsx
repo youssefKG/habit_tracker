@@ -15,7 +15,6 @@ import {
   CategoryRepository,
 } from "@/repositories";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import categoriesData from "@/assets/categoriesData";
 
 interface DbContextInterface {
   dataSource: DataSource | null;
