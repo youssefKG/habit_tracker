@@ -25,18 +25,6 @@ const HabitStats: FC<HabitStatsProps> = ({ name }) => {
   );
 };
 
-const RenderCalendar = () => {
-  return <View></View>;
-};
-
-const RenderWeekDays = () => {
-  return <View>j</View>;
-};
-
-const RenderMonths = () => {
-  return <View></View>;
-};
-
 const RenderBoxs = () => {
   return (
     <View className="flex flex-row gap-1">
@@ -66,10 +54,20 @@ export const activities: Activity[] = [
   { date: "2025-09-09", count: 7, level: 3 },
   { date: "2025-09-10", count: 7, level: 3 },
   { date: "2025-09-11", count: 7, level: 3 },
-  { date: "2025-10-06", count: 1, level: 1 },
-  { date: "2025-11-09", count: 1, level: 1 },
-  { date: "2025-11-06", count: 1, level: 1 },
-  { date: "2025-12-30", count: 6, level: 3 },
+  { date: "2025-10-16", count: 1, level: 1 },
+  { date: "2025-10-17", count: 1, level: 1 },
+  { date: "2025-10-18", count: 1, level: 1 },
+  { date: "2025-11-27", count: 1, level: 1 },
+  { date: "2025-11-27", count: 1, level: 1 },
+  { date: "2025-11-20", count: 1, level: 1 },
+  { date: "2025-11-21", count: 1, level: 1 },
+  { date: "2025-11-22", count: 1, level: 1 },
+  { date: "2025-11-23", count: 1, level: 1 },
+  { date: "2025-11-24", count: 1, level: 1 },
+  { date: "2025-11-27", count: 1, level: 1 },
+  { date: "2025-11-28", count: 1, level: 1 },
+  { date: "2025-11-29", count: 1, level: 1 },
+  { date: "2025-11-30", count: 1, level: 1 },
 ];
 
 export default HabitStats;

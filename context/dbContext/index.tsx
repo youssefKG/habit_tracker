@@ -14,6 +14,8 @@ import {
   HabitRepository,
   CategoryRepository,
 } from "@/repositories";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import categoriesData from "@/assets/categoriesData";
 
 interface DbContextInterface {
   dataSource: DataSource | null;
@@ -50,6 +52,24 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
     initializeDb();
   }, []);
 
+  useEffect(() => {
+    const seedDatabaseIfNeeded = async () => {
+      try {
+        const hasSeeded = await AsyncStorage.getItem("hasSeeded");
+
+        if (!hasSeeded && dataSource) {
+          const categoryRepository = new CategoryRepository(dataSource);
+          await categoryRepository.insertMany(initialCategories);
+          await AsyncStorage.setItem("hasSeeded", JSON.stringify(true));
+          console.log("the database has successfully");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    seedDatabaseIfNeeded();
+  }, []);
+
   return (
     dataSource && (
       <DbContext.Provider
@@ -70,6 +90,21 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
 const useDataSource = () => {
   return useContext(DbContext);
 };
+const initialCategories: Partial<Category>[] = [
+  {
+    name: "Work",
+    icon: "briefcase-outline",
+    library: "MaterialCommunityIcons",
+  },
+  { name: "Fitness", icon: "dumbbell", library: "FontAwesome5" },
+  { name: "Health", icon: "heart-outline", library: "MaterialCommunityIcons" },
+  { name: "Study", icon: "book-outline", library: "Ionicons" },
+  {
+    name: "Finance",
+    icon: "wallet-outline",
+    library: "MaterialCommunityIcons",
+  },
+];
 
 export default DbProvider;
 

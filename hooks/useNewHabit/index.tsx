@@ -3,7 +3,9 @@ import { NewHabit, Reminder } from "@/types/habit.type";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import useBottomSheetModal from "../useBottomSheet";
 import { Category } from "@/types/category";
+import { CategoryDTO } from "@/dto/category.dto";
 import { useDataSource } from "@/context/dbContext";
+import { CategoryRepository } from "@/repositories";
 
 const newHabitDefaultValues: NewHabit = {
   name: "youssef",
@@ -35,10 +37,15 @@ const useNewHabit = () => {
     null,
   );
   const [newCategory, setNewCategory] = useState<Category>(defaultNewCategory);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   // context start
-  const { habitRebository, reminderRepository, dayRepository } =
-    useDataSource();
+  const {
+    habitRebository,
+    reminderRepository,
+    dayRepository,
+    categoryRepositroy,
+  } = useDataSource();
   // context end
 
   // modals  start
@@ -201,7 +208,7 @@ const useNewHabit = () => {
     console.log(newHabit.targetPerDay);
     // save reminders
     try {
-      const habit = await habitRebository.create({
+      await habitRebository.create({
         name: newHabit.name,
         description: newHabit.description,
         color: newHabit.color,
@@ -236,6 +243,16 @@ const useNewHabit = () => {
       }
     };
     fetchHabit();
+  }, []);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categories_list = await categoryRepositroy.getAll();
+        setCategories(categories_list);
+        console.log("categories list: ", categories_list);
+      } catch (error) {}
+    };
+    fetchCategories();
   }, []);
   // completions per day end
 

@@ -19,6 +19,10 @@ class CategoryRepository {
     return category;
   }
 
+  async insertMany(categories: Partial<Category>[]) {
+    await this.ormRepository.insert(categories);
+  }
+
   async getAll() {
     const categories = await this.ormRepository.find();
     return categories;

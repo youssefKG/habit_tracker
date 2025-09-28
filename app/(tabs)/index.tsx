@@ -26,6 +26,7 @@ export default function TabOneScreen() {
       try {
         const allHabits = await habitRebository.getAll();
         setHabits(allHabits);
+        console.log("habit list: ", allHabits);
       } catch (error) {
         console.log(error);
       }

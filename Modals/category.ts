@@ -22,6 +22,6 @@ export class Category {
   @Column({ type: "varchar" })
   library!: string;
 
-  @OneToMany(() => Habit, (habit) => habit.categories)
+  @OneToMany(() => Habit, (habit) => habit.category)
   habits!: Habit[];
 }
