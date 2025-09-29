@@ -5,27 +5,15 @@ import useBottomSheetModal from "../useBottomSheet";
 import { Category } from "@/types/category";
 import { CategoryDTO } from "@/dto/category.dto";
 import { useDataSource } from "@/context/dbContext";
-import { CategoryRepository } from "@/repositories";
 
 const newHabitDefaultValues: NewHabit = {
   name: "youssef",
   description: "the first habit",
   frequency: "none",
   reminders: [],
-  category: {
-    name: "",
-    icon: "",
-    library: "",
-  },
   color: "#FF6B6B",
   targetPerDay: 1,
   requiredLogs: 1,
-};
-
-const defaultNewCategory: Category = {
-  name: "",
-  icon: "",
-  library: "",
 };
 
 const useNewHabit = () => {
@@ -33,15 +21,11 @@ const useNewHabit = () => {
   const [newReminders, setNewReminders] = useState<Reminder[]>([]);
   const [timePickerDate, setTimePickerDate] = useState<Date>(new Date());
   const [isTimePickerOpen, setIsTimePickerOpen] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null,
-  );
-  const [newCategory, setNewCategory] = useState<Category>(defaultNewCategory);
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   // context start
   const {
-    habitRebository,
+    habitRepository,
     reminderRepository,
     dayRepository,
     categoryRepositroy,
@@ -170,16 +154,7 @@ const useNewHabit = () => {
   };
   // reminder end
 
-  // categories start
-  const selectCategories = (category: Category) => {
-    setSelectedCategory(category);
-  };
-
-  const addNewCategory = () => {};
-  // categories end
-
   // completions per day start
-
   const incrementTargetPerDay = () => {
     if (newHabit.targetPerDay < 10) {
       setNewHabit((prev) => ({
@@ -188,6 +163,7 @@ const useNewHabit = () => {
       }));
     }
   };
+
   const decrementTargetPerDay = () => {
     console.log("increment");
     if (newHabit.targetPerDay > 1) {
@@ -208,7 +184,7 @@ const useNewHabit = () => {
     console.log(newHabit.targetPerDay);
     // save reminders
     try {
-      await habitRebository.create({
+      await habitRepository.create({
         name: newHabit.name,
         description: newHabit.description,
         color: newHabit.color,
@@ -226,7 +202,7 @@ const useNewHabit = () => {
       setNewHabit(newHabitDefaultValues);
       closeNewCategoryBottomSheet();
       closeNewHabitBottomSheet();
-      const allHabits = await habitRebository.getAll();
+      const allHabits = await habitRepository.getAll();
       console.log("all habits ", allHabits);
     } catch (err) {
       console.log("error creating habit", err);
@@ -235,7 +211,7 @@ const useNewHabit = () => {
   useEffect(() => {
     const fetchHabit = async () => {
       try {
-        const allHabits = await habitRebository.getAll();
+        const allHabits = await habitRepository.getAll();
         console.log("all habits ", allHabits);
         allHabits.forEach((habit) => console.log(habit));
       } catch (error) {
@@ -244,6 +220,7 @@ const useNewHabit = () => {
     };
     fetchHabit();
   }, []);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -254,6 +231,10 @@ const useNewHabit = () => {
     };
     fetchCategories();
   }, []);
+
+  const selectCategory = (category: Category) => {
+    setNewHabit((prev) => ({ ...prev, category }));
+  };
   // completions per day end
 
   return {
@@ -281,6 +262,7 @@ const useNewHabit = () => {
     onCloseNewHabitBottomSheet,
     categories,
     saveNewHabit,
+    selectCategory,
   };
 };
 export default useNewHabit;
