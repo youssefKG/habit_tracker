@@ -18,7 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface DbContextInterface {
   dataSource: DataSource | null;
-  habitRebository: HabitRepository;
+  habitRepository: HabitRepository;
   categoryRepositroy: CategoryRepository;
   reminderRepository: ReminderRepository;
   dayRepository: DayRepository;
@@ -60,6 +60,7 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
           const categoryRepository = new CategoryRepository(dataSource);
           await categoryRepository.insertMany(initialCategories);
           await AsyncStorage.setItem("hasSeeded", JSON.stringify(true));
+          console.log("the categories has been initialized successfully");
           console.log("the database has successfully");
         }
       } catch (error) {
@@ -74,7 +75,7 @@ const DbProvider: FC<PropsWithChildren> = ({ children }) => {
       <DbContext.Provider
         value={{
           dataSource,
-          habitRebository: new HabitRepository(dataSource),
+          habitRepository: new HabitRepository(dataSource),
           reminderRepository: new ReminderRepository(dataSource),
           categoryRepositroy: new CategoryRepository(dataSource),
           dayRepository: new DayRepository(dataSource),

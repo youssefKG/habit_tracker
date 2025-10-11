@@ -267,10 +267,7 @@ const useNewHabit = () => {
     }));
   };
 
-  const handleChangeNewCategoryName = (name: string) => {
-    setNewCategory((prevNewCategory) => ({ ...prevNewCategory, name }));
-  };
-
+  const handleChangeNewCategoryName = () => {};
   return {
     newHabit,
     handleNewHabitFieldChange,
@@ -300,7 +297,6 @@ const useNewHabit = () => {
     createCategory,
     selectNewCatergoryIcon,
     handleChangeNewCategoryName,
-    newCategory,
   };
 };
 export default useNewHabit;

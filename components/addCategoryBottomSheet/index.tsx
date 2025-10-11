@@ -17,11 +17,13 @@ import { TextInput } from "react-native-gesture-handler";
 interface AddNewCategoryBottomSheetProps {
   ref: Ref<BottomSheetModal>;
   openIconsBottomSheet: () => void;
+  handleChangeNewCategoryName: (name: string) => void;
 }
 
 const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
   ref,
   openIconsBottomSheet,
+  handleChangeNewCategoryName,
 }) => {
   return (
     <BottomSheetModal
@@ -66,6 +68,7 @@ const AddNewCategoryBottomSheet: FC<AddNewCategoryBottomSheetProps> = ({
                   placeholder="Fitness, Sport, ..."
                   placeholderClassName="text-gray-200"
                   className="bg-[#343a40] flex-1 placeholder:text-gray-300 rounded-xl border border-gray-600"
+                  onChangeText={handleChangeNewCategoryName}
                 />
               </View>
             </KeyboardAvoidingView>

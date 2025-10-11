@@ -9,12 +9,17 @@ import { TextInput } from "react-native-gesture-handler";
 import { categoriesIconsData } from "@/assets/iconsData";
 import RenderCategoriesIcons from "../RenderCategoryIcons";
 
+type Icon = {
+  icon: string;
+  library: string;
+};
 interface IconsBottomSheetProps {
   ref: Ref<BottomSheetModal>;
   closeIconsBottomSheet: () => void;
+  handleSelect: (icon: Icon) => void;
 }
 
-const IconsBottomSheet: FC<IconsBottomSheetProps> = ({ ref }) => {
+const IconsBottomSheet: FC<IconsBottomSheetProps> = ({ ref, handleSelect }) => {
   return (
     <BottomSheetModal
       ref={ref}
@@ -45,6 +50,7 @@ const IconsBottomSheet: FC<IconsBottomSheetProps> = ({ ref }) => {
             {categoriesIconsData.map((cat_icons) => (
               <RenderCategoriesIcons
                 name={cat_icons.name}
+                handleSelect={handleSelect}
                 icons={cat_icons.icons}
               />
             ))}

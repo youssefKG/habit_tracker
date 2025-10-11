@@ -12,26 +12,26 @@ import HabitStats from "@/components/HabitStats";
 export default function TabOneScreen() {
   const { openNewHabitBottomSheet } = useHabitContext();
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const { habitRebository } = useDataSource();
+  const { habitRepository } = useDataSource();
   const [habits, setHabits] = useState<Habit[]>([]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    const allHabits = await habitRebository.getAll();
+    const allHabits = await habitRepository.getAll();
     setHabits(allHabits);
     setRefreshing(false);
   }, []);
   useEffect(() => {
     const fetchHabits = async () => {
       try {
-        const allHabits = await habitRebository.getAll();
+        const allHabits = await habitRepository.getAll();
         setHabits(allHabits);
         console.log("habit list: ", allHabits);
       } catch (error) {
         console.log(error);
       }
     };
-    if (habitRebository) fetchHabits();
+    if (habitRepository) fetchHabits();
   }, []);
   return (
     <SafeAreaView className="flex-1">

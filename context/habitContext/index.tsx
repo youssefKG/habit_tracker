@@ -40,6 +40,9 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
     onCloseNewHabitBottomSheet,
     saveNewHabit,
     categories,
+    newCategory,
+    selectNewCatergoryIcon,
+    handleChangeNewCategoryName,
   } = useNewHabit();
 
   const [
@@ -100,10 +103,12 @@ const HabitProvider: FC<PropsWithChildren> = ({ children }) => {
       <AddNewCategoryBottomSheet
         openIconsBottomSheet={openIconsBottomSheet}
         ref={addNewCategoryBottomSheetRef}
+        handleChangeNewCategoryName={handleChangeNewCategoryName}
       />
       <IconsBottomSheet
         closeIconsBottomSheet={closeIconsBottomSheet}
         ref={iconsBottomSheetRef}
+        handleSelect={selectNewCatergoryIcon}
       />
       <ReminderBottomSheet
         openTimePicker={openTimePicker}

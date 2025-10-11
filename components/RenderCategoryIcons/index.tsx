@@ -13,20 +13,26 @@ type Icon = {
 interface RenderCatIconsProps {
   icons: Icon[];
   name: string;
+  handleSelect: (icon: { icon: string; library: string }) => void;
 }
 
-const RenderCategoriesIcons: FC<RenderCatIconsProps> = ({ name, icons }) => {
+const RenderCategoriesIcons: FC<RenderCatIconsProps> = ({
+  name,
+  icons,
+  handleSelect,
+}) => {
   return (
     <View className="flex gap-4">
       <Text className="font-medium text-gray-300">{name}</Text>
       <View className="h-px w-full bg-gray-600" />
       <View className="flex gap-2 flex-row flex-wrap items-center">
-        {icons.map((icon, index: number) => (
+        {icons.map((ic, index: number) => (
           <TouchableOpacity
+            onPress={() => handleSelect({ icon: ic.name, library: ic.library })}
             className="flex items-center justify-center
           rounded-xl w-12 h-12 border border-gray-500"
           >
-            <RenderIcon key={index} {...icon} />
+            <RenderIcon key={index} {...ic} />
           </TouchableOpacity>
         ))}
       </View>
